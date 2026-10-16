@@ -9,6 +9,13 @@ tags: [meta, log]
 
 # Wiki Log
 
+## 2026-10-15 — Inspección SSH de VM
+
+- Usuario proporcionó destino SSH. Actualizados DEPLOY_HOST y DEPLOY_USER de los tres repositorios.
+- Acceso local denegado; inspección GitHub Actions 38833979789 confirmó llave de despliegue no autorizada.
+- Agregado modo inspect_only al workflow de infraestructura. Preparada llave dedicada fuera de los repositorios, pendiente de autorizar en la VM; secretos privados sin publicar.
+- Sin merge ni cambios remotos en contenedores. Actualizados [[Deploy Flow]], [[hot]] e [[index]].
+
 Append-only. Newest entries at the TOP.
 
 ---

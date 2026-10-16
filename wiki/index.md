@@ -35,7 +35,7 @@ Master catalog. Update on every ingest or significant write.
 |------|------|--------|---------|
 | [[flows/_index]] | index | active | Catálogo de flujos |
 | [[Data Flow]] | flow | active | Navegador → Nginx → API → Mongo |
-| [[Deploy Flow]] | flow | active | PR #1 por repositorio, preparación validada, deploy pendiente de acceso SSH |
+| [[Deploy Flow]] | flow | active | PR #1 por repositorio, inspección VM, pendiente autorizar llave SSH de despliegue |
 
 ## Decisions
 

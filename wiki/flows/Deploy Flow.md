@@ -13,6 +13,8 @@ updated: 2026-10-15
 
 ### PR y preparación del despliegue — 2026-10-15
 
+Estado de acceso actualizado: el usuario proporcionó host y usuario root; se actualizaron `DEPLOY_HOST` y `DEPLOY_USER` en los tres repositorios. SSH local rechazado y el [run de inspección 38833979789](https://github.com/basetaxi580-580/base580-infra/actions/runs/38833979789) confirmó que `DEPLOY_SSH_KEY` no está autorizado (`unable to authenticate`). El workflow ahora admite `inspect_only=true` para verificar la VM sin desplegar. Se preparó una llave dedicada `~/.ssh/base580_deploy` en la computadora del usuario; falta autorizar su parte pública en la VM. No publicar llaves privadas ni sustituir el secreto antes de validar el nuevo acceso. Los tres PR continúan abiertos y main sin modificar.
+
 - PR creados, abiertos y sin conflictos: [infra #1](https://github.com/basetaxi580-580/base580-infra/pull/1), [backend #1](https://github.com/basetaxi580-580/base580-backend/pull/1), [frontend #1](https://github.com/basetaxi580-580/base580-frontend/pull/1).
 - Pruebas locales repetidas: frontend 5/5 y backend 2/2 (override Java 21 local); Compose y sintaxis Bash correctos. Los PR no tienen checks automáticos configurados.
 - Deploy pendiente de acceso a la VM. Últimos runs frontend/backend terminaron con `ssh: handshake failed ... connection reset by peer`; el run histórico de infra falló por host no configurado (anterior a la creación de secretos).
