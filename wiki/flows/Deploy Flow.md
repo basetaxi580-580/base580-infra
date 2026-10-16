@@ -1,7 +1,7 @@
 ---
 type: flow
 status: active
-purpose: "Cómo se construyen imágenes y se actualizan servicios"
+purpose: "Publicación, despliegue independiente y recuperación de Base580"
 tags: [flow, deploy]
 created: 2026-10-15
 updated: 2026-10-15
@@ -9,24 +9,88 @@ updated: 2026-10-15
 
 # Deploy Flow
 
-## Publicación en GitHub
+## Estado actual — 2026-10-15
 
-### PR y preparación del despliegue — 2026-10-15
+Sitio publicado y verificado: http://179.236.81.226/.
 
-Estado de acceso actualizado: el usuario proporcionó host y usuario root; se actualizaron `DEPLOY_HOST` y `DEPLOY_USER` en los tres repositorios. SSH local rechazado y el [run de inspección 38833979789](https://github.com/basetaxi580-580/base580-infra/actions/runs/38833979789) confirmó que `DEPLOY_SSH_KEY` no está autorizado (`unable to authenticate`). El workflow ahora admite `inspect_only=true` para verificar la VM sin desplegar. Se preparó una llave dedicada `~/.ssh/base580_deploy` en la computadora del usuario; falta autorizar su parte pública en la VM. No publicar llaves privadas ni sustituir el secreto antes de validar el nuevo acceso. Los tres PR continúan abiertos y main sin modificar.
+Los tres PR #1 están integrados mediante squash en main:
 
-- PR creados, abiertos y sin conflictos: [infra #1](https://github.com/basetaxi580-580/base580-infra/pull/1), [backend #1](https://github.com/basetaxi580-580/base580-backend/pull/1), [frontend #1](https://github.com/basetaxi580-580/base580-frontend/pull/1).
-- Pruebas locales repetidas: frontend 5/5 y backend 2/2 (override Java 21 local); Compose y sintaxis Bash correctos. Los PR no tienen checks automáticos configurados.
-- Deploy pendiente de acceso a la VM. Últimos runs frontend/backend terminaron con `ssh: handshake failed ... connection reset by peer`; el run histórico de infra falló por host no configurado (anterior a la creación de secretos).
-- Los nombres de secretos existen, pero sus valores no pueden recuperarse mediante GitHub. Se solicitó al usuario IP/dominio y usuario SSH, sin pedir contraseñas ni llaves privadas.
-- No integrar main hasta comprobar acceso, volumen Mongo y preparación de Compose en la VM. No se ejecutó despliegue en esta fase.
+| Repositorio | PR | Commit desplegado | Workflow |
+| --- | --- | --- | --- |
+| Infraestructura | [#1](https://github.com/basetaxi580-580/base580-infra/pull/1) | 3366f6a | [38834522441](https://github.com/basetaxi580-580/base580-infra/actions/runs/38834522441) |
+| Backend | [#1](https://github.com/basetaxi580-580/base580-backend/pull/1) | 5818b99 | [38834621044](https://github.com/basetaxi580-580/base580-backend/actions/runs/38834621044) |
+| Frontend | [#1](https://github.com/basetaxi580-580/base580-frontend/pull/1) | 96b65eb | [38834742069](https://github.com/basetaxi580-580/base580-frontend/actions/runs/38834742069) |
 
-- Cuenta solicitada por el usuario: `basetaxi580@gmail.com`. Propietario de los remotos existentes: `basetaxi580-580` (GitHub no publica su correo; verificar la identidad al iniciar sesión).
-- Repositorios independientes: `https://github.com/basetaxi580-580/base580-frontend`, `https://github.com/basetaxi580-580/base580-backend` y `https://github.com/basetaxi580-580/base580-infra`.
-- Verificar `gh auth status`, `git remote -v`, rama y cambios de cada repositorio antes de publicar. La cuenta usada debe tener permiso de escritura; configurar `user.email` no autentica GitHub.
-- Preparar commits y subir ramas de trabajo por repositorio para revisión. No mezclar sus historiales ni subir dependencias, builds o secretos.
-- Un push a `main` activa el workflow de despliegue. La migración a Compose requiere preparación de la VM y respaldo/verificación del volumen Mongo descritos en el README antes de integrar las ramas.
-- Autenticación completada por el usuario: cuenta activa `basetaxi580-580`, con permiso de escritura verificado en los tres repositorios. Rama de publicación: `codex/integracion-repos-ui`; frontend y backend subidos a origin. Infraestructura incluye este registro de publicación. No se modifica main ni se activa despliegue.
+Los workflows terminaron correctamente. Frontend, backend y MongoDB están saludables.
+Nginx y /api/state responden HTTP 200 desde el sitio público. El navegador muestra
+Miguel Rios Bravo y permite ocultar el menú con la flecha inferior.
+
+## Repositorios y publicación
+
+Cuenta GitHub autenticada: basetaxi580-580; correo solicitado por el usuario:
+basetaxi580@gmail.com. Los remotos son repositorios independientes:
+
+- https://github.com/basetaxi580-580/base580-frontend
+- https://github.com/basetaxi580-580/base580-backend
+- https://github.com/basetaxi580-580/base580-infra
+
+Verificar cuenta, permisos y rama antes de publicar. user.email sólo configura la
+autoría y no autentica GitHub. Crear una rama y PR por repositorio. Push a main
+activa el workflow de ese servicio; no mezclar sus historiales.
+
+## VM
+
+Los clones de despliegue están en /root/base580-infra, /root/base580-backend y
+/root/base580-frontend. Los tres son clones limpios en main. Se instalaron jq y flock
+está disponible. Docker Compose administra la red base580-net y conserva el volumen
+base580-infra_mongo_data.
+
+La configuración local de VM está en /root/base580-infra/.env (no versionada):
+FRONTEND_PORT=80, BACKEND_IMAGE=base580-backend:latest,
+FRONTEND_IMAGE=base580-frontend:latest y COMPOSE_PROJECT_NAME=base580-infra.
+Backend y MongoDB sólo publican sus puertos al loopback del host.
+
+Cada workflow actualiza su clon y ejecuta el script de infraestructura:
+
+```bash
+sudo bash ~/base580-infra/scripts/deploy.sh backend ~/base580-backend
+sudo bash ~/base580-infra/scripts/deploy.sh frontend ~/base580-frontend
+```
+
+El script construye la imagen configurada, serializa despliegues mediante flock y
+actualiza sólo el servicio solicitado. Nginx vuelve a resolver el nombre del backend
+si cambia su IP. El despliegue del frontend verifica también /api/state.
+
+El workflow de infraestructura admite inspect_only=true para inspeccionar sin
+cambiar servicios. Secretos Actions: DEPLOY_HOST, DEPLOY_USER y DEPLOY_SSH_KEY.
+La llave dedicada local es ~/.ssh/base580_deploy; su parte pública fue autorizada
+por el usuario en la VM y los secretos de los tres repositorios se actualizaron.
+No publicar la llave privada. La inspección autenticada pasó en el run 38834332594.
+
+## Respaldo y recuperación
+
+Respaldo previo: /root/base580-backups/20261016T011735Z en la VM, accesible por root.
+Incluye mongo.archive.gz, source-before-deploy.tar.gz, containers.json y los clones
+originales bajo original-base580-infra/backend/frontend. El backend original tenía
+cambios sin commit en dos nombres de demostración; se conservaron sin sobrescribir.
+El frontend original no tenía .git; se conservó completo y se instaló un clon limpio.
+
+Las imágenes anteriores se conservaron como
+base580-backend:rollback-20261016T011735Z y
+base580-frontend:rollback-20261016T011735Z. Para recuperar aplicaciones se pueden
+seleccionar estas referencias en .env y aplicar Compose. Restaurar Mongo desde el
+archivo sólo si fuera necesario; el despliegue conserva el volumen original.
+Nunca ejecutar docker compose down -v para una actualización.
+
+## Verificación realizada
+
+- Frontend: build de producción y cinco pruebas correctas.
+- Backend: dos pruebas correctas dentro de Docker con Java 24 y Maven verify.
+- Prueba aislada Docker de Nginx -> API -> MongoDB temporal, eliminada al terminar.
+- Configuración Compose y sintaxis Bash correctas.
+- Sitio público, API, favicon y controles del menú verificados en navegador.
+- Se corrigieron permisos de favicon en el origen de la VM y se reconstruyó la
+  imagen mediante el workflow; el archivo servido tiene permisos 644.
 
 ## Local
 
@@ -37,28 +101,12 @@ cp env.example .env
 docker compose up -d --wait --wait-timeout 180
 ```
 
-## VM
+El entorno local nativo también funciona con Angular en localhost:4200, backend
+en localhost:8080 y MongoDB en localhost:27017. Ver README de infraestructura.
 
-1. Actualizar clon de [[base580-infra]].
-2. `.env` con `FRONTEND_PORT=80`.
-3. Construir imágenes o dejar que workflows lo hagan.
-4. `sudo bash scripts/deploy.sh all` (o `backend` / `frontend` con path al clon).
+## Pendientes funcionales
 
-`deploy.sh` usa flock para serializar deploys de los tres repos. Nginx re-resuelve el backend si cambia su IP. Deploy frontend verifica `/api/state`.
-
-Secretos Actions: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_SSH_KEY`.
-
-## Verificación local — 2026-10-15
-
-- Arranque local nativo comprobado: Angular en `http://localhost:4200`, backend en `http://localhost:8080` y Mongo existente en `127.0.0.1:27017`. Salud `UP`; `/api/state` a través del proxy Angular devuelve HTTP 200 con JSON. Procesos iniciados en segundo plano; logs en `%TEMP%/base580-local`.
-
-- Configuración de Compose y sintaxis Bash validadas.
-- Build de producción Angular correcto; advertencia existente de presupuesto CSS (4.94 kB / 4 kB).
-- Frontend: cinco pruebas pasan, incluidas tres regresiones de sincronización.
-- Backend: dos pruebas pasan con Java 21 mediante override local; el proyecto y su Dockerfile mantienen Java 24.
-- La prueba Mongo verifica que `MONGODB_URI` selecciona la base indicada mediante `spring.mongodb.uri`, sin leer ni modificar datos.
-- Pendiente: prueba completa con contenedores (motor Docker local apagado) y aplicación en VM. No se hizo push ni despliegue.
-- La sincronización carga todos los socios, catálogos y auditoría sin registrar una edición ficticia. El guardado conserva las auditorías de todos los socios.
-- Sigue pendiente resolver concurrencia del endpoint que reemplaza el estado completo y persistir los flujos operativos que aún usan datos de demostración.
-
-See [[base580-infra]], [[Infrastructure]].
+El despliegue está completado. Persisten pendientes del prototipo: concurrencia del
+endpoint que reemplaza el estado completo, conservación integral del historial y
+flujos operativos que todavía utilizan datos de demostración. No confundir un
+despliegue saludable con la finalización de todos los módulos del producto.

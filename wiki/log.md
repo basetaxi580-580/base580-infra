@@ -9,6 +9,14 @@ tags: [meta, log]
 
 # Wiki Log
 
+## 2026-10-15 — Despliegue completado
+
+- Integrados los PR #1 de infraestructura, backend y frontend; workflows de despliegue correctos.
+- Verificado sitio público, API HTTP 200, usuario Miguel Rios Bravo y menú con flecha. Contenedores saludables; volumen Mongo original conservado.
+- Autorización SSH validada. Respaldo completo en /root/base580-backups/20261016T011735Z y etiquetas rollback preservadas; fuentes originales con cambios locales conservadas.
+- Probadas imágenes con Java 24 y stack Docker aislado. Normalizados permisos del favicon y reconstruida la imagen frontend.
+- Reescritos [[Deploy Flow]] y [[hot]] con estado actual y recuperación; actualizado [[index]].
+
 ## 2026-10-15 — Inspección SSH de VM
 
 - Usuario proporcionó destino SSH. Actualizados DEPLOY_HOST y DEPLOY_USER de los tres repositorios.
