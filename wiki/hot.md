@@ -17,6 +17,7 @@ updated: 2026-10-15T18:45:00
 - Wiki path for all AIs: `C:\Users\carlo\Documents\base580\base580-infra` — read `wiki/hot.md` then `wiki/index.md`.
 
 ## Recent Changes
+- PR #1 abierto en cada repositorio, sin conflictos. Pruebas frontend 5/5 y backend 2/2 repetidas; Compose/Bash correctos. Deploy pendiente de IP/dominio y usuario SSH: últimos workflows fallan en handshake; no se integró main. Ver [[Deploy Flow]].
 - Publicación GitHub: cuenta `basetaxi580-580` autenticada por el usuario y con permiso push en los tres repositorios. Cambios en `codex/integracion-repos-ui`; frontend/backend publicados, infra incluye este registro. No se integra main ni se despliega. Proceso en [[Deploy Flow]].
 - UI: Miguel Rios Bravo en encabezado/reportes; menú con flecha inferior y slide/gestos en móvil. Verificación en navegador a 390 px y escritorio; pruebas 5/5. Ver [[base580-frontend]].
 - Stack local nativo iniciado y verificado: Angular `localhost:4200`, backend `localhost:8080`, Mongo `127.0.0.1:27017`; salud `UP` y `/api/state` vía Angular devuelve 200 JSON. Continúa pendiente la prueba Docker/VM.

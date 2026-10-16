@@ -11,6 +11,14 @@ updated: 2026-10-15
 
 ## Publicación en GitHub
 
+### PR y preparación del despliegue — 2026-10-15
+
+- PR creados, abiertos y sin conflictos: [infra #1](https://github.com/basetaxi580-580/base580-infra/pull/1), [backend #1](https://github.com/basetaxi580-580/base580-backend/pull/1), [frontend #1](https://github.com/basetaxi580-580/base580-frontend/pull/1).
+- Pruebas locales repetidas: frontend 5/5 y backend 2/2 (override Java 21 local); Compose y sintaxis Bash correctos. Los PR no tienen checks automáticos configurados.
+- Deploy pendiente de acceso a la VM. Últimos runs frontend/backend terminaron con `ssh: handshake failed ... connection reset by peer`; el run histórico de infra falló por host no configurado (anterior a la creación de secretos).
+- Los nombres de secretos existen, pero sus valores no pueden recuperarse mediante GitHub. Se solicitó al usuario IP/dominio y usuario SSH, sin pedir contraseñas ni llaves privadas.
+- No integrar main hasta comprobar acceso, volumen Mongo y preparación de Compose en la VM. No se ejecutó despliegue en esta fase.
+
 - Cuenta solicitada por el usuario: `basetaxi580@gmail.com`. Propietario de los remotos existentes: `basetaxi580-580` (GitHub no publica su correo; verificar la identidad al iniciar sesión).
 - Repositorios independientes: `https://github.com/basetaxi580-580/base580-frontend`, `https://github.com/basetaxi580-580/base580-backend` y `https://github.com/basetaxi580-580/base580-infra`.
 - Verificar `gh auth status`, `git remote -v`, rama y cambios de cada repositorio antes de publicar. La cuenta usada debe tener permiso de escritura; configurar `user.email` no autentica GitHub.

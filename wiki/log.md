@@ -13,6 +13,13 @@ Append-only. Newest entries at the TOP.
 
 ---
 
+## 2026-10-15 — PR creados y preparación para deploy
+
+- Creados PR #1 independientes de frontend, backend e infraestructura; sin conflictos y adjuntos al chat.
+- Pruebas frontend 5/5 y backend 2/2 repetidas, configuración Compose y sintaxis Bash correctas.
+- Revisados logs: workflows anteriores fallan al conectar SSH. Solicitados IP/dominio de VM y usuario SSH. main no modificado; sin deploy hasta verificar acceso y conservación de Mongo.
+- Actualizados [[Deploy Flow]], [[hot]] e [[index]].
+
 ## 2026-10-15 — Cuenta verificada y publicación de ramas
 
 - Usuario completó autorización GitHub; sesión activa basetaxi580-580, con permisos de escritura comprobados en los tres repositorios.
