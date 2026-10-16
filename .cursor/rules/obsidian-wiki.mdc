@@ -1,0 +1,28 @@
+---
+description: Shared Base580 Obsidian wiki — consult and update on durable knowledge
+alwaysApply: true
+---
+
+# Base580 Obsidian Wiki
+
+Vault path: `C:\Users\carlo\Documents\base580\base580-infra`
+
+All AIs working on Base580 (infra, backend, frontend) MUST use this vault as the shared knowledge base.
+
+## Before answering project questions
+
+1. Read `wiki/hot.md` first
+2. If needed, read `wiki/index.md`
+3. Then drill into specific pages under `wiki/`
+
+## When you learn durable facts
+
+Write or update pages under `wiki/`, then:
+
+- Update `wiki/index.md`
+- Overwrite `wiki/hot.md` with recent context (~500 words)
+- Prepend an entry to `wiki/log.md` (newest on top)
+
+Never modify files in `.raw/`. Drop new sources there and ingest into `wiki/sources/`.
+
+Schema and conventions: `CLAUDE.md` at the vault root.

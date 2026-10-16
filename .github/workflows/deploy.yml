@@ -8,13 +8,14 @@ on:
       - 'docker-compose.yml'
       - 'README.md'
       - 'env.example'
+      - 'scripts/**'
       - 'docs/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 concurrency:
   group: infra-deploy
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -30,9 +31,10 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script_stop: true
+          command_timeout: 35m
           script: |
             set -e
             cd ~/base580-infra
             git fetch origin main
             git reset --hard origin/main
-            echo 'Infra repo updated'
+            sudo bash scripts/deploy.sh all
