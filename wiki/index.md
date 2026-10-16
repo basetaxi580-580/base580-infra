@@ -35,7 +35,7 @@ Master catalog. Update on every ingest or significant write.
 |------|------|--------|---------|
 | [[flows/_index]] | index | active | Catálogo de flujos |
 | [[Data Flow]] | flow | active | Navegador → Nginx → API → Mongo |
-| [[Deploy Flow]] | flow | active | Publicación GitHub por cuenta/repositorio, deploy.sh y pendientes Docker/VM |
+| [[Deploy Flow]] | flow | active | Cuenta GitHub verificada, ramas codex/integracion-repos-ui, deploy.sh y pendientes Docker/VM |
 
 ## Decisions
 

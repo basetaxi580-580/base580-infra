@@ -13,6 +13,12 @@ Append-only. Newest entries at the TOP.
 
 ---
 
+## 2026-10-15 — Cuenta verificada y publicación de ramas
+
+- Usuario completó autorización GitHub; sesión activa basetaxi580-580, con permisos de escritura comprobados en los tres repositorios.
+- Frontend y backend publicados en origin/codex/integracion-repos-ui. Infraestructura incorpora este registro para publicar su rama a continuación.
+- main sin modificar; no se activa despliegue. Actualizados [[Deploy Flow]], [[hot]] e [[index]].
+
 ## 2026-10-15 — Preparación de publicación GitHub
 
 - Verificados los tres remotos en `basetaxi580-580`; publicación solicitada con `basetaxi580@gmail.com`.

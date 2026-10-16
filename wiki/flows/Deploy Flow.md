@@ -16,7 +16,7 @@ updated: 2026-10-15
 - Verificar `gh auth status`, `git remote -v`, rama y cambios de cada repositorio antes de publicar. La cuenta usada debe tener permiso de escritura; configurar `user.email` no autentica GitHub.
 - Preparar commits y subir ramas de trabajo por repositorio para revisión. No mezclar sus historiales ni subir dependencias, builds o secretos.
 - Un push a `main` activa el workflow de despliegue. La migración a Compose requiere preparación de la VM y respaldo/verificación del volumen Mongo descritos en el README antes de integrar las ramas.
-- En esta sesión se encontró únicamente `CharlyTlelo` activo en gh y sin permiso de escritura al backend; falta autenticar la cuenta propietaria para publicar.
+- Autenticación completada por el usuario: cuenta activa `basetaxi580-580`, con permiso de escritura verificado en los tres repositorios. Rama de publicación: `codex/integracion-repos-ui`; frontend y backend subidos a origin. Infraestructura incluye este registro de publicación. No se modifica main ni se activa despliegue.
 
 ## Local
 
