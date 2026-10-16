@@ -1,0 +1,14 @@
+.env
+.env.*
+.deploy.lock
+**/.obsidian/workspace*.json
+
+# Obsidian workspace (changes constantly; keep vault settings)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/workspace-*.json
+.smart-connections/
+.obsidian-git-data
+.trash/
+.DS_Store
+Thumbs.db

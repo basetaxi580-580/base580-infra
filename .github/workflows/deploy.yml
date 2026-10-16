@@ -8,13 +8,19 @@ on:
       - 'docker-compose.yml'
       - 'README.md'
       - 'env.example'
+      - 'scripts/**'
       - 'docs/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
+    inputs:
+      inspect_only:
+        description: Inspect VM prerequisites without changing services
+        type: boolean
+        default: false
 
 concurrency:
   group: infra-deploy
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -23,16 +29,42 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync infra repo on VM
+      - name: Inspect VM before deployment
+        if: ${{ inputs.inspect_only }}
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script_stop: true
+          command_timeout: 2m
+          script: |
+            set -e
+            hostname
+            docker version --format '{{.Server.Version}}'
+            docker compose version
+            docker ps -a --format '{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}'
+            docker network ls
+            docker volume ls
+            if docker inspect base580-mongo >/dev/null 2>&1; then
+              docker inspect base580-mongo --format 'Mongo mounts: {{json .Mounts}}'
+              docker inspect base580-mongo --format 'Mongo networks: {{json .NetworkSettings.Networks}}'
+            fi
+            command -v jq || true
+            command -v flock || true
+            ls -d ~/base580-* 2>/dev/null || true
+      - name: Sync infra repo on VM
+        if: ${{ !inputs.inspect_only }}
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script_stop: true
+          command_timeout: 35m
           script: |
             set -e
             cd ~/base580-infra
             git fetch origin main
             git reset --hard origin/main
-            echo 'Infra repo updated'
+            sudo bash scripts/deploy.sh all
