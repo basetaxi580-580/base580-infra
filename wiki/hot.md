@@ -11,7 +11,7 @@ tags: [meta, context]
 
 ## Estado actual
 
-2026-10-15: Base580 publicado en http://179.236.81.226/ y verificado. PR #1 de
+2026-10-16: Base580 publicado en http://179.236.81.226/ y verificado. PR #1 de
 frontend, backend e infraestructura integrados en main; workflows correctos.
 Los tres contenedores están saludables y /api/state responde HTTP 200 desde Nginx.
 
