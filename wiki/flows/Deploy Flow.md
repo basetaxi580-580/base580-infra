@@ -11,7 +11,7 @@ updated: 2026-10-15
 
 ## Estado actual — 2026-10-15
 
-Sitio publicado y verificado: http://179.236.81.226/.
+Sitio publicado y verificado: http://34.41.156.148/.
 
 Los tres PR #1 están integrados mediante squash en main:
 
