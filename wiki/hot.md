@@ -11,27 +11,26 @@ tags: [meta, context]
 
 ## Last Updated
 
-2026-10-21 (cierre de sesión). Memoria Obsidian actualizada. Sin commit/push/deploy pedidos. Continuar en [[Pago de Boletos 2026]].
+2026-10-21 (cierre). `/boletos` **en productivo** bajo cuenta GitHub `basetaxi580-580`. Sesión cerrada. Continuar en [[Pago de Boletos 2026]] / [[Deploy Flow]].
 
-## Cierre de sesión — `/boletos`
+## Producción — desplegado
 
-Fuente oficial: `C:\Users\carlo\Downloads\PAGO BOLETOS 2026.xlsx`.
+Cuenta: **basetaxi580-580**. Sitio: http://179.236.81.226/ (ruta `/boletos`).
 
-- **19 pestañas** = orden/nombres del libro (10 `BASE *` catálogo + captura + `TOTAL`). Colores: TAPO `#FF66FF`, NORTE 26 `#FFC000`, especiales `#FFFF00`, PTE `#00B0F0`.
-- Catálogo (`catalogo: true`): sin SERV. Captura: cantidad/importe. Norte captura = layout BASE NTE + SERV.
-- Semilla: `extract_boletos_tarifas.py` → `tarifas.tsv` (**861** tarifas; incluye TAPO 24, REZ, PTE 25). Al reiniciar backend, `ensureSeed` mete las faltantes.
-- Código: `boletos.page.ts`, `boletos-hojas.ts`, `boletos-grid.ts`. Default hoja `base-nte-26`. Orden localStorage se resetea si faltan ids `base-*`.
+| Repo | PR | Deploy Actions |
+|------|-----|----------------|
+| backend | [#2](https://github.com/basetaxi580-580/base580-backend/pull/2) | success `39706545908` |
+| frontend | [#4](https://github.com/basetaxi580-580/base580-frontend/pull/4) + fix CSS [#5](https://github.com/basetaxi580-580/base580-frontend/pull/5) | #4 falló (budget CSS); #5 success `39706976442` |
+| infra wiki | [#2](https://github.com/basetaxi580-580/base580-infra/pull/2) | docs en main |
 
-## UX pestañas / cuadrícula
+## `/boletos` (estado shipped)
 
-- Mantener **1 s** → temblor (~0.7 s/ciclo); × rojo sólido; drag reorder; Esc/fuera sale.
-- Hover crece suave (no en temblor). `+` crea libre con nombre. Renombrar clic derecho.
-- Autosave 1.5 s / salir celda. Undo 5. Menú celda, negrita, fusiones, fórmulas, coords rosa, resize.
-- `localStorage`: `boletos-hojas-orden|ocultas|libres|nombres|formatos|fusiones|etiquetas|medidas|formulas|formulas-tocadas|cuadricula`.
+Fuente: `C:\Users\carlo\Downloads\PAGO BOLETOS 2026.xlsx`.
 
-## Negocio / pendiente
-
-Fuera aún: impresión, historial de cortes, folio, formas de pago, copiar `I15` / desfase TAPO `I29→K30`, TOTAL con D31 ponderado. Detalle: [[Pago de Boletos 2026]].
+- **19 pestañas** (BASE* catálogo + captura + TOTAL); colores TAPO / NORTE 26 / especiales / PTE.
+- Semilla **861** tarifas (`tarifas.tsv`); `ensureSeed` en backend.
+- UX: temblor 1 s, × rojo, grow hover, autosave 1.5 s, undo 5, fórmulas, `localStorage` de hojas/formato.
+- Pendiente producto: impresión, historial, folio, `I15` / desfase TAPO, TOTAL D31 ponderado.
 
 ## Estado actual (resto)
 
