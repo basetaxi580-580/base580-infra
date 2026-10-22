@@ -3,7 +3,7 @@ type: meta
 title: "Wiki Index"
 status: active
 created: 2026-10-15
-updated: 2026-10-15
+updated: 2026-10-21
 tags: [meta, index]
 ---
 
@@ -24,10 +24,10 @@ Master catalog. Update on every ingest or significant write.
 | Page | Type | Status | Summary |
 |------|------|--------|---------|
 | [[modules/_index]] | index | active | Catálogo de módulos |
-| [[Architecture Overview]] | module | active | Vista de arquitectura 3 repos |
+| [[Architecture Overview]] | module | active | Tres repos; dominio en un documento app_state |
 | [[base580-infra]] | module | active | Compose, deploy, red, volúmenes |
-| [[base580-backend]] | module | active | Spring Boot API + MongoDB |
-| [[base580-frontend]] | module | active | Angular UI, menú inferior con slide móvil y Nginx proxy |
+| [[base580-backend]] | module | active | Spring Boot 4; un documento Mongo y API de estado |
+| [[base580-frontend]] | module | active | Angular 22; /boletos Excel-UI; boletos fuera de app_state |
 
 ## Flows
 
@@ -59,6 +59,8 @@ Master catalog. Update on every ingest or significant write.
 | [[concepts/_index]] | index | active | Conceptos |
 | [[entities/_index]] | index | active | Entidades |
 | [[Tech Stack]] | concept | active | Stack técnico |
+| [[Pago de Boletos 2026]] | concept | active | /boletos = 19 pestañas del xlsx; 861 tarifas; corte en API |
+| [[Sprints Pago de Boletos 2026]] | concept | active | Captura y consolidado en /boletos; faltan impresión y consulta |
 | [[sources/sprint-plan]] | source | active | Resumen del sprint plan |
 
 ## Other indexes
