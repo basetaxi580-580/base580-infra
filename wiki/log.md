@@ -9,10 +9,15 @@ tags: [meta, log]
 
 # Wiki Log
 
-## 2026-10-21 — Cierre de sesión (memoria Obsidian)
+## 2026-10-21 — Cierre: /boletos en productivo (basetaxi580-580)
 
-- Guardado en [[hot]] el estado final de `/boletos`: 19 pestañas del xlsx, 861 tarifas, UX temblor/×/grow/autosave, claves `localStorage`, pendientes (impresión/historial/I15).
-- Concepto canónico: [[Pago de Boletos 2026]]. Sin commit/deploy. Sesión cerrada a petición del usuario.
+- PRs mergeados y deploy OK: backend [#2](https://github.com/basetaxi580-580/base580-backend/pull/2), frontend [#4](https://github.com/basetaxi580-580/base580-frontend/pull/4) + CSS budget [#5](https://github.com/basetaxi580-580/base580-frontend/pull/5), wiki infra [#2](https://github.com/basetaxi580-580/base580-infra/pull/2).
+- Actions: backend `39706545908` success; frontend `39706976442` success (tras subir `anyComponentStyle` a 16 kB).
+- [[hot]] actualizado con URLs/PRs. Sesión cerrada. Cuenta correcta: basetaxi580-580 (no CharlyTlelo).
+
+## 2026-10-21 — Cierre de sesión (memoria Obsidian, pre-deploy)
+
+- Guardado en [[hot]] el estado de `/boletos` antes del deploy: 19 pestañas, 861 tarifas, UX. Luego se publicó a productivo (ver entrada de arriba).
 
 ## 2026-10-21 — Anclar /boletos a PAGO BOLETOS 2026.xlsx
 

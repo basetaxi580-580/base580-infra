@@ -4,14 +4,26 @@ status: active
 purpose: "Publicación, despliegue independiente y recuperación de Base580"
 tags: [flow, deploy]
 created: 2026-10-15
-updated: 2026-10-15
+updated: 2026-10-21
 ---
 
 # Deploy Flow
 
-## Estado actual — 2026-10-15
+## Estado actual — 2026-10-21
 
-Sitio publicado y verificado: http://34.41.156.148/.
+Cuenta GitHub: **basetaxi580-580**. `/boletos` (19 pestañas + API tarifas/cortes) publicado:
+
+| Repo | PR | Workflow |
+| --- | --- | --- |
+| Backend | [#2](https://github.com/basetaxi580-580/base580-backend/pull/2) | [39706545908](https://github.com/basetaxi580-580/base580-backend/actions/runs/39706545908) success |
+| Frontend | [#4](https://github.com/basetaxi580-580/base580-frontend/pull/4) + CSS [#5](https://github.com/basetaxi580-580/base580-frontend/pull/5) | [39706976442](https://github.com/basetaxi580-580/base580-frontend/actions/runs/39706976442) success |
+| Infra wiki | [#2](https://github.com/basetaxi580-580/base580-infra/pull/2) | docs en main |
+
+Sitio: http://179.236.81.226/ (`/boletos`). Detalle producto: [[Pago de Boletos 2026]].
+
+## Histórico — 2026-10-15
+
+Sitio publicado y verificado (IP de entonces en el run de Actions).
 
 Los tres PR #1 están integrados mediante squash en main:
 
