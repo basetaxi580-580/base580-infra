@@ -3,11 +3,16 @@ type: meta
 title: "Wiki Log"
 status: active
 created: 2026-10-15
-updated: 2026-10-21
+updated: 2026-10-27
 tags: [meta, log]
 ---
 
 # Wiki Log
+
+## 2026-10-27 — IP pública estable para dominio Base580
+
+- En el proyecto GCP `plataforma580` se reservó `base580-web-ip` en `us-central1` con la IP `34.41.156.148`, ya asociada a `base580-vm`.
+- Hostinger publica `sitio580.com.mx` y `www.sitio580.com.mx` hacia esa IP. Se añadió Caddy al despliegue para obtener y renovar HTTPS automáticamente.
 
 ## 2026-10-21 — Cierre: /boletos en productivo (basetaxi580-580)
 

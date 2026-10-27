@@ -15,7 +15,7 @@ tags: [meta, context]
 
 ## Producción — desplegado
 
-Cuenta: **basetaxi580-580**. Sitio: http://179.236.81.226/ (ruta `/boletos`).
+Cuenta: **basetaxi580-580**. Sitio: http://34.41.156.148/ (ruta `/boletos`). La IP externa `34.41.156.148` está reservada en GCP como `base580-web-ip` (`us-central1`) para el dominio futuro.
 
 | Repo | PR | Deploy Actions |
 |------|-----|----------------|

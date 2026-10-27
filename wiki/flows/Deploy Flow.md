@@ -19,7 +19,7 @@ Cuenta GitHub: **basetaxi580-580**. `/boletos` (19 pestañas + API tarifas/corte
 | Frontend | [#4](https://github.com/basetaxi580-580/base580-frontend/pull/4) + CSS [#5](https://github.com/basetaxi580-580/base580-frontend/pull/5) | [39706976442](https://github.com/basetaxi580-580/base580-frontend/actions/runs/39706976442) success |
 | Infra wiki | [#2](https://github.com/basetaxi580-580/base580-infra/pull/2) | docs en main |
 
-Sitio: http://179.236.81.226/ (`/boletos`). Detalle producto: [[Pago de Boletos 2026]].
+Sitio: http://34.41.156.148/ (`/boletos`). La IP externa estática es `34.41.156.148` (`base580-web-ip`, región `us-central1`). El acceso por los dominios `sitio580.com.mx` y `www.sitio580.com.mx` termina TLS en Caddy y se reenvía al frontend Nginx. Detalle producto: [[Pago de Boletos 2026]].
 
 ## Histórico — 2026-10-15
 

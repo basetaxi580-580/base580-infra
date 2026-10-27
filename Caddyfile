@@ -1,0 +1,3 @@
+sitio580.com.mx, www.sitio580.com.mx {
+  reverse_proxy frontend:80
+}
