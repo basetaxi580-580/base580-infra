@@ -350,3 +350,9 @@ Ver [[Key Decisions]], [[Pago de Boletos 2026]] y [[Sprints Pago de Boletos 2026
 - **Solicitud:** mantener las pestañas visibles mientras el usuario recorre la hoja.
 - **Decisión:** aceptado. La barra de pestañas permanece fija en la parte inferior del área visible y conserva su scroll horizontal.
 - **Criterio de aceptación:** al desplazarse verticalmente, el usuario sigue pudiendo cambiar de hoja sin bajar hasta el final del libro.
+
+## Cambio 2026-11-11 — Reordenar libros
+
+- **Solicitud:** permitir mover la posición de los libros manteniendo presionada la pestaña y arrastrándola.
+- **Decisión:** aceptado. El orden de todas las pestañas se guarda junto con el estado compartido del libro.
+- **Criterio de aceptación:** al soltar una pestaña en otra posición, el nuevo orden permanece después de recargar.

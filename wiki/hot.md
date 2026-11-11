@@ -119,6 +119,7 @@ Pago de boletos: las hojas de captura ya están en pestañas y los importes se e
 - El menú contextual de números de fila permite agregar filas arriba/abajo y eliminar filas, conservando la estructura al guardar.
 - Todas las hojas muestran la misma rejilla base de A–AL y filas 1–200 para evitar cortes visuales entre pestañas.
 - La barra de pestañas permanece visible en la parte inferior mientras se desplaza la hoja.
+- Las pestañas se pueden reordenar manteniendo presionado el libro y arrastrándolo a otra posición; el orden se comparte al guardar.
 
 Despliegue terminado; quedan funcionalidades del prototipo: concurrencia al guardar
 estado completo, historial truncado y operaciones/reportes con datos de ejemplo.

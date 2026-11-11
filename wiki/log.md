@@ -266,3 +266,8 @@ Append-only. Newest entries at the TOP.
 ## 2026-11-11 — Pestañas siempre visibles
 
 - La barra de pestañas se fijó con comportamiento sticky en la parte inferior del área visible del libro.
+
+## 2026-11-11 — Ordenamiento de pestañas
+
+- Se agregó arrastre de pestañas con el mouse para cambiar la posición de los libros.
+- El orden completo se persiste en el estado versionado del libro y se recupera al recargar.
