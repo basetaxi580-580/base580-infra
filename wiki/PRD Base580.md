@@ -338,3 +338,9 @@ Ver [[Key Decisions]], [[Pago de Boletos 2026]] y [[Sprints Pago de Boletos 2026
 - **Solicitud:** ampliar libros nuevos a A–Z y 1–200, corregir la inserción de columnas y agregar opciones para insertar o eliminar filas desde los números.
 - **Decisión:** aceptado. Las operaciones de filas y columnas forman parte de la estructura persistida del libro.
 - **Criterio de aceptación:** una hoja nueva muestra Z y 200, puede ampliar columnas y permite agregar/eliminar filas mediante clic derecho.
+
+## Cambio 2026-11-11 — Rejilla uniforme de hojas
+
+- **Solicitud:** ampliar el rango de columnas hasta `AL` y mantener la misma cantidad base de filas y columnas en todos los libros.
+- **Decisión:** aceptado. Todas las pestañas muestran como mínimo A–AL y 1–200, sin alterar los datos importados.
+- **Criterio de aceptación:** ninguna pestaña se ve más corta que otra por tener menos filas o columnas visibles.

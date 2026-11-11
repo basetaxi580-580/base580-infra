@@ -258,3 +258,7 @@ Append-only. Newest entries at the TOP.
 - Se amplió la plantilla de hojas nuevas a A–Z y 1–200.
 - Se corrigió la reconstrucción de operaciones para que las columnas nuevas sí se inserten en hojas personalizadas.
 - Se incorporaron operaciones persistentes de filas y su menú contextual en los encabezados numéricos.
+
+## 2026-11-11 — Rejilla visual uniforme
+
+- La vista base de todas las hojas se normalizó a columnas A–AL y filas 1–200.
