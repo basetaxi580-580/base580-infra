@@ -3,11 +3,20 @@ type: meta
 title: "Wiki Log"
 status: active
 created: 2026-10-15
-updated: 2026-10-27
+updated: 2026-11-11
 tags: [meta, log]
 ---
 
 # Wiki Log
+
+## 2026-11-11 — Despliegue de la UI de boletos completado
+
+- Los PR de frontend #11, backend #5 e infraestructura #5 quedaron integrados en `main` bajo la cuenta `basetaxi580-580`.
+- Backend desplegado con éxito en [Actions 43112622446](https://github.com/basetaxi580-580/base580-backend/actions/runs/43112622446).
+- Frontend pasó `npm ci`, 36 pruebas, build de producción, transferencia SSH y validación del contenedor en [Actions 43112205518](https://github.com/basetaxi580-580/base580-frontend/actions/runs/43112205518).
+- Producción verificada en `https://sitio580.com.mx/boletos`; el recurso dejó de servir la versión del 6 de noviembre y pasó a `Last-Modified: 2026-11-11 22:39:30 GMT`.
+- Incidente de despliegue: un run de validación del PR quedó en cola y retuvo el grupo `frontend-deploy` porque `cancel-in-progress` está desactivado. Se canceló el run obsoleto y se reencoló el despliegue de `main`.
+- La documentación de Obsidian queda actualizada con el diagnóstico y el procedimiento de recuperación.
 
 ## 2026-11-11 — PRs preparados para revisión
 
@@ -23,7 +32,7 @@ tags: [meta, log]
 - El menú contextual ahora incluye `Opciones de formato` con `Combinar celdas` y `Quitar combinación`. La combinación requiere un rango seleccionado con Shift, rechaza solapamientos y solo permite quitar una combinación existente.
 - Se eliminó la barra de búsqueda global del marco y se retiraron las rutas/módulos obsoletos de la versión anterior y `/lista-precios`; `/boletos` queda como entrada vigente del libro.
 - Verificación frontend: 36 pruebas y build de producción correctos. Commits locales: `7ae0f08`, `4a1d6d1`, `3a21b4c`, `98c9f7c`.
-- Sin push ni despliegue todavía; queda listo para preparar PR del repositorio frontend.
+- En ese momento no había push ni despliegue; el cambio quedó posteriormente integrado y publicado mediante PR #11.
 
 ## 2026-11-11 — Pestañas BASE dinámicas y persistentes
 
