@@ -82,7 +82,7 @@ Los cortes no deben vivir dentro de `app_state`: cada `PUT /api/state` reemplaza
 
 **Fuente oficial del corte:** `C:\Users\carlo\Downloads\PAGO BOLETOS 2026.xlsx`. Semilla: `extract_boletos_tarifas.py` → `tarifas.tsv` (**861** tarifas, incluye BASE TAPO 24/REZ y BASE PTE 25).
 
-2026-10-21: `/boletos` replica las **19 pestañas** del Excel (orden y nombres del libro; colores TAPO/NORTE 26/especiales/PTE). `?hoja=`. `/lista-precios` = misma pantalla. API `/api/boletos/tarifas` y `/api/boletos/cortes`. Llave única base + vigencia + ámbito + tipo + zona. Cortes en `ticket_settlements`. UI: `boletos.page.ts` (+ hojas/grid/formula/math).
+2026-11-11: `/boletos` replica las **19 pestañas** del Excel y es la entrada vigente del editor. La base importada vive en `boletos-libro.data.json`; las capturas, formatos, estructura, medidas, combinaciones, pestañas personalizadas y orden se guardan en `ticket_workbook` mediante `/api/boletos/libro`. La versión anterior y `/lista-precios` fueron retiradas.
 
 ### Mapa pestaña ↔ Excel (orden del libro)
 

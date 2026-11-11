@@ -9,6 +9,15 @@ tags: [meta, context]
 
 # Recent Context
 
+## Estado actual de `/boletos` — 2026-11-11
+
+- El editor Excel vigente es la única entrada del flujo; se retiraron `/boletos/anterior`, `/lista-precios` y la barra de búsqueda global.
+- UI: fondos sólidos, pestañas opacas, encabezados A–AL y 1–200 en rosa, tipografía redondeada y menús contextuales con estilo consistente.
+- Interacciones: clic derecho → `Opciones de formato` → `Combinar celdas` / `Quitar combinación`; seleccionar rangos con clic + Shift. También se pueden redimensionar columnas y filas arrastrando sus encabezados.
+- Persistencia: cambios, formatos, estructura, medidas, combinaciones, pestañas y orden se guardan en `ticket_workbook` mediante `PUT /api/boletos/libro`.
+- Verificación: frontend 36 pruebas y build de producción correctos. Los últimos cambios están en commits locales; no se han subido ni desplegado.
+- Para publicar, revisar [[Deploy Flow]]: cada repositorio tiene su propio workflow de GitHub Actions, por lo que el PR de esta tanda corresponde principalmente a `base580-frontend`.
+
 ## Ambientes local y producción
 
 2026-11-11: se separaron los ambientes operativos. Local usa `docker-compose.local.yml` para levantar únicamente MongoDB con el volumen `base580-local-mongo-data`; backend y frontend corren nativamente en `localhost:8080` y `localhost:4200`. Producción conserva el Compose completo con frontend, backend, MongoDB y Caddy; sus puertos HTTP/HTTPS ahora son configurables mediante `CADDY_HTTP_PORT` y `CADDY_HTTPS_PORT`. Plantillas: `env.local.example` y `env.production.example`.

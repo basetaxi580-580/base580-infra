@@ -9,6 +9,15 @@ tags: [meta, log]
 
 # Wiki Log
 
+## 2026-11-11 — UI final y combinación de celdas en boletos
+
+- La pantalla `/boletos` conserva la maqueta Excel con superficies sólidas, pestañas opacas, encabezados de filas/columnas en rosa y tipografía redondeada.
+- Se añadió redimensionamiento tipo Excel para columnas por letras y filas por números; las medidas se persisten dentro de `ticket_workbook.estructura`.
+- El menú contextual ahora incluye `Opciones de formato` con `Combinar celdas` y `Quitar combinación`. La combinación requiere un rango seleccionado con Shift, rechaza solapamientos y solo permite quitar una combinación existente.
+- Se eliminó la barra de búsqueda global del marco y se retiraron las rutas/módulos obsoletos de la versión anterior y `/lista-precios`; `/boletos` queda como entrada vigente del libro.
+- Verificación frontend: 36 pruebas y build de producción correctos. Commits locales: `7ae0f08`, `4a1d6d1`, `3a21b4c`, `98c9f7c`.
+- Sin push ni despliegue todavía; queda listo para preparar PR del repositorio frontend.
+
 ## 2026-11-11 — Pestañas BASE dinámicas y persistentes
 
 - Implementadas pestañas personalizadas en `/boletos` con identificador estable, nombres únicos y validación compartida en `ticket_workbook`.
