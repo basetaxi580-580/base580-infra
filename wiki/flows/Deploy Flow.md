@@ -9,6 +9,31 @@ updated: 2026-11-11
 
 # Deploy Flow
 
+## Último despliegue verificado — 2026-11-11
+
+Los cambios de `/boletos` ya están integrados y publicados bajo la cuenta `basetaxi580-580`:
+
+| Servicio | PR integrado | Commit en `main` | Workflow |
+| --- | --- | --- | --- |
+| Frontend | [#11](https://github.com/basetaxi580-580/base580-frontend/pull/11) | `49e5104` | [43112205518](https://github.com/basetaxi580-580/base580-frontend/actions/runs/43112205518) success |
+| Backend | [#5](https://github.com/basetaxi580-580/base580-backend/pull/5) | `905dea7` | [43112622446](https://github.com/basetaxi580-580/base580-backend/actions/runs/43112622446) success |
+| Infraestructura | [#5](https://github.com/basetaxi580-580/base580-infra/pull/5) | `dce31e4` | workflow sin cambios funcionales al producto |
+
+Producción se verificó en `https://sitio580.com.mx/boletos`. El frontend se actualizó a las `2026-11-11 22:39:30 GMT` y dejó de servir la versión anterior del 6 de noviembre.
+
+### Recuperación de una cola de Actions
+
+Si un despliegue de `main` aparece pausado:
+
+1. Consultar el estado del PR y del run con `gh pr view` y `gh run view`.
+2. Revisar `jobs` y `pending_deployments`; si el job está `queued` sin runner y no hay aprobación pendiente, el problema está en la cola.
+3. Revisar concurrencia. En frontend, los eventos `pull_request` y `push` comparten `frontend-deploy` y `cancel-in-progress: false`.
+4. Si el PR ya fue integrado, cancelar únicamente el run de PR obsoleto.
+5. Esperar o reencolar el run de `main`; verificar que termine en `success` antes de revisar producción.
+6. Confirmar la fecha `Last-Modified` de `https://sitio580.com.mx/boletos` y hacer `Ctrl + F5` en el navegador.
+
+No cancelar runs que estén ejecutando una transferencia activa al servidor. Esta recuperación no cambia código ni hace otro merge.
+
 ## Estado actual — 2026-10-21
 
 Cuenta GitHub: **basetaxi580-580**. `/boletos` (19 pestañas + API tarifas/cortes) publicado:

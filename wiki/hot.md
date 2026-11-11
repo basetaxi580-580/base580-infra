@@ -9,12 +9,16 @@ tags: [meta, context]
 
 # Recent Context
 
-## PRs pendientes de revisión — 2026-11-11
+## Último despliegue — 2026-11-11
 
-- [Frontend #11](https://github.com/basetaxi580-580/base580-frontend/pull/11): UI Excel, limpieza de versión anterior, redimensionamiento y combinación de celdas.
-- [Backend #5](https://github.com/basetaxi580-580/base580-backend/pull/5): persistencia de pestañas y orden del workbook.
-- [Infra #5](https://github.com/basetaxi580-580/base580-infra/pull/5): actualización de wiki y flujo de PR.
-- Cuenta activa: `basetaxi580-580`. Pendiente revisar y hacer merge; no desplegar todavía.
+- [Frontend #11](https://github.com/basetaxi580-580/base580-frontend/pull/11) integrado en `main` con commit `49e5104`.
+- [Backend #5](https://github.com/basetaxi580-580/base580-backend/pull/5) integrado en `main` con commit `905dea7`.
+- [Infra #5](https://github.com/basetaxi580-580/base580-infra/pull/5) integrado en `main` con commit `dce31e4`.
+- Backend desplegado correctamente en la VM: [Actions 43112622446](https://github.com/basetaxi580-580/base580-backend/actions/runs/43112622446).
+- Frontend desplegado correctamente después de liberar una cola de Actions: [Actions 43112205518](https://github.com/basetaxi580-580/base580-frontend/actions/runs/43112205518).
+- Producción verificada en `https://sitio580.com.mx/boletos`; `Last-Modified: 2026-11-11 22:39:30 GMT`.
+- La captura inicial mostraba la versión anterior porque producción aún servía `2026-11-06`; la causa fue un run de PR obsoleto reteniendo la concurrencia del frontend. Se canceló ese run y se reencoló el deploy de `main`.
+- Cuenta activa: `basetaxi580-580`.
 
 ## Estado actual de `/boletos` — 2026-11-11
 
@@ -22,7 +26,7 @@ tags: [meta, context]
 - UI: fondos sólidos, pestañas opacas, encabezados A–AL y 1–200 en rosa, tipografía redondeada y menús contextuales con estilo consistente.
 - Interacciones: clic derecho → `Opciones de formato` → `Combinar celdas` / `Quitar combinación`; seleccionar rangos con clic + Shift. También se pueden redimensionar columnas y filas arrastrando sus encabezados.
 - Persistencia: cambios, formatos, estructura, medidas, combinaciones, pestañas y orden se guardan en `ticket_workbook` mediante `PUT /api/boletos/libro`.
-- Verificación: frontend 36 pruebas y build de producción correctos. Los últimos cambios están en commits locales; no se han subido ni desplegado.
+- Verificación: frontend 36 pruebas y build de producción correctos. El cambio está integrado y desplegado en producción.
 - Para publicar, revisar [[Deploy Flow]]: cada repositorio tiene su propio workflow de GitHub Actions, por lo que el PR de esta tanda corresponde principalmente a `base580-frontend`.
 
 ## Ambientes local y producción
@@ -47,7 +51,7 @@ Cambio 1 del cliente: en `/boletos` se necesitan dos nuevas pestañas de catálo
 
 ## Last Updated
 
-2026-10-21 (cierre). `/boletos` **en productivo** bajo cuenta GitHub `basetaxi580-580`. Sesión cerrada. Continuar en [[Pago de Boletos 2026]] / [[Deploy Flow]].
+2026-11-11 (cierre). `/boletos` actualizado en productivo bajo cuenta GitHub `basetaxi580-580`. Continuar en [[Pago de Boletos 2026]] / [[Deploy Flow]].
 
 ## Producción — desplegado
 

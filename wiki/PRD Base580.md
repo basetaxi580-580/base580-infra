@@ -294,6 +294,7 @@ Ver [[Key Decisions]], [[Pago de Boletos 2026]] y [[Sprints Pago de Boletos 2026
 | 2026-11-11 | Cambio 1: se solicita crear dos nuevas pestañas de catálogo BASE en `/boletos`, gestionadas con clic derecho mediante Añadir libro, Eliminar y Cambiar nombre; se aclara que no son hojas libres. | Pendiente de definición e implementación |
 | 2026-10-21 | Se registra `/boletos` en productivo y el cierre de la primera entrega del corte. | Vigente; producción por reconfirmar |
 | 2026-11-11 | Se implementan pestañas BASE personalizadas persistentes, con identificador estable, alta/renombre/eliminación protegidos, bloqueo optimista y soporte de concurrencia. | Vigente; inicia vacía y no altera TOTAL ni las hojas importadas |
+| 2026-11-11 | Se implementa Copiar libro completo desde el menú contextual de pestañas: copia profunda con fórmulas ajustadas, formatos, capturas, fusiones, anchos/altos, persistencia y undo/redo. 5 hallazgos menores registrados en la sección del cambio. | Implementado; hallazgos pendientes de cierre |
 
 ### Plantilla para futuros cambios
 
@@ -327,6 +328,32 @@ Ver [[Key Decisions]], [[Pago de Boletos 2026]] y [[Sprints Pago de Boletos 2026
 - **[ASSUMPTION-2]** Las funcionalidades marcadas como “Hecho” corresponden al último estado documentado y deben reconfirmarse cuando se cambie código o producción.
 - **[ASSUMPTION-3]** Las solicitudes nuevas se registrarán en este documento y se desglosarán en iniciativas, épicas o tickets según su tamaño.
 
+
+---
+
+## 12. Mejoras IA — Seguimiento de hallazgos y deuda técnica
+
+Esta sección consolida los hallazgos registrados durante las revisiones de implementación. Cada entrada indica el hallazgo, su origen, prioridad y estado.
+
+### 12.1 Hallazgos abiertos (copiarHoja — 2026-11-11)
+
+| # | Hallazgo | Archivo | Prioridad | Estado |
+|---|----------|---------|-----------|--------|
+| IA-01 | `sinHoja` usa comparación **case-sensitive** (`startsWith`) a diferencia del resto del motor que usa `toUpperCase`. Si una clave quedara con capitalización distinta al nombre, las entradas y formatos no se limpiarían al eliminar esa pestaña. | `boletos-libro.ts` | P2 | Abierto |
+| IA-02 | No existe prueba de que las **fusiones** del origen se copien independientemente en la copia; `clonarHoja` lo garantiza estructuralmente pero sin regresión explícita. | `boletos-libro.spec.ts` | P3 | Abierto |
+| IA-03 | No hay prueba de `hiddenRows`, `hiddenCols` ni `freeze` en el flujo de copia, aunque el deep clone los incluye. | `boletos-libro.spec.ts` | P3 | Abierto |
+| IA-04 | No hay prueba dedicada a la reescritura de fórmulas: que referencias al nombre original queden con el nuevo nombre y que referencias externas permanezcan intactas. | `boletos-libro.spec.ts` | P2 | Abierto |
+| IA-05 | No está definido si copiar una pestaña importada (no creada por el usuario) debe estar permitido. La copia se agrega a `personales` y queda editable/eliminable sin criterio explícito. | `plan-copiar-libro-completo.md` | P3 | Abierto |
+
+### 12.2 Criterios de cierre
+
+Un hallazgo se cierra cuando:
+- **P2 (IA-01, IA-04):** el bug o la regresión están cubiertos por un test que falla antes del fix y pasa después, y el fix está en `main`.
+- **P3 (IA-02, IA-03, IA-05):** hay una prueba que lo cubre, o se documenta una decisión explícita de "no cubrir" con justificación en el plan.
+
+Cuando se cierre un hallazgo, actualizar la columna **Estado** a `Cerrado — <fecha>` y agregar referencia al commit o decisión.
+
+
 ## Cambio 2026-11-11 — Pestañas editables en Boletos
 
 - **Solicitud:** mostrar el menú de pestañas en la parte superior, incluir las acciones de añadir, cambiar nombre y eliminar en todas las hojas, y no agregar `BASE` automáticamente a hojas nuevas.
@@ -356,3 +383,31 @@ Ver [[Key Decisions]], [[Pago de Boletos 2026]] y [[Sprints Pago de Boletos 2026
 - **Solicitud:** permitir mover la posición de los libros manteniendo presionada la pestaña y arrastrándola.
 - **Decisión:** aceptado. El orden de todas las pestañas se guarda junto con el estado compartido del libro.
 - **Criterio de aceptación:** al soltar una pestaña en otra posición, el nuevo orden permanece después de recargar.
+
+## Cambio 2026-11-11 — Copiar libro completo desde el menú de pestañas
+
+- **Solicitud:** permitir crear una copia completa de una pestaña existente desde el menú contextual, con nombre personalizado, conservando todo el contenido y la estructura visual del origen (celdas, fórmulas, formatos, anchos, altos, filas/columnas ocultas, congelado, combinaciones, capturas).
+- **Motivo:** duplicar un libro celda por celda desde cero perdería fórmulas, formatos, dimensiones, combinaciones y capturas del cliente.
+- **Impacto:** `boletos-libro.ts` (nuevo método `copiarHoja` en `MotorLibro`, nueva op `copiarHoja` en `OpLibro`), `boletos-libro.page.ts` (nueva acción en el menú contextual de pestaña), `boletos-libro.spec.ts` (pruebas de copia, reconstrucción y renombrado posterior). Sin cambios en el backend ni en el DTO.
+- **Decisión:** aceptado e implementado el 2026-11-11.
+- **Criterio de aceptación:** la copia conserva celdas, formatos, anchos, independencia del origen y fórmulas propias ajustadas al nuevo nombre; persiste tras guardado/recarga; sigue el flujo de undo/redo y arrastre de pestañas existente.
+- **Referencias:** `_bmad-output/initiative-pago-boletos-2026/plan-copiar-libro-completo.md`
+
+### Estado de implementación (revisado 2026-11-11)
+
+**Implementado y verificado:**
+- Copia profunda vía `clonarHoja` (deep JSON clone) cubre cells, cols, rows, hiddenRows, hiddenCols, freeze y fusiones sin referencias compartidas al origen.
+- Fórmulas que apuntan al nombre de la hoja fuente se reescriben al nombre de la copia; referencias externas se conservan.
+- Capturas (`entradas`) y formatos personalizados (`formatosMap`) se duplican con claves del nuevo nombre vía `copiarClaves`.
+- Reconstrucción tras recarga: `renombrarPersonalizada` actualiza el campo `hoja` y `plantilla.name` de la op, por lo que `reconstruir()` la encuentra correctamente tras recargar.
+- Validación de nombre: vacío, con `!`, >64 caracteres y nombre duplicado (comparación case-insensitive) muestran el mensaje correcto sin crear la pestaña.
+- Undo/redo: se llama `instantanea()` antes y `registrarDeshacer(antes)` después, igual que en las demás operaciones.
+- Navegación automática a la copia al finalizar.
+
+**Hallazgos pendientes de seguimiento:**
+
+1. `sinHoja` usa comparación case-sensitive (`clave.startsWith(nombre + '!')`) a diferencia del resto de funciones que usan `toUpperCase`. Si en algún flujo las claves quedaran con capitalización distinta al nombre de la hoja, las entradas y formatos no se limpiarían al eliminar esa pestaña.
+2. No hay prueba que verifique que las fusiones del origen se copian a la copia y que modificar fusiones en uno no afecta al otro. `clonarHoja` lo garantiza estructuralmente, pero no hay regresión explícita.
+3. No hay prueba de `hiddenRows`, `hiddenCols` ni `freeze` en el flujo de copia, aunque el deep clone los incluye.
+4. No hay prueba dedicada a que una fórmula que referenciaba el nombre original quede reescrita al nombre de la copia, ni que las referencias a otras hojas permanezcan intactas.
+5. `copiarHoja` permite copiar cualquier pestaña, incluidas las importadas; la copia se agrega a `personales` y queda editable/eliminable. No hay criterio de aceptación que lo prohíba ni que lo valide; el comportamiento no fue contemplado explícitamente en el plan.
