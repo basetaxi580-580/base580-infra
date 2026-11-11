@@ -9,6 +9,13 @@ tags: [meta, log]
 
 # Wiki Log
 
+## 2026-11-11 — PRs preparados para revisión
+
+- Frontend: [PR #11](https://github.com/basetaxi580-580/base580-frontend/pull/11).
+- Backend: [PR #5](https://github.com/basetaxi580-580/base580-backend/pull/5).
+- Infraestructura/Obsidian: [PR #5](https://github.com/basetaxi580-580/base580-infra/pull/5).
+- Cuenta GitHub activa: `basetaxi580-580`. No se hizo merge ni despliegue.
+
 ## 2026-11-11 — UI final y combinación de celdas en boletos
 
 - La pantalla `/boletos` conserva la maqueta Excel con superficies sólidas, pestañas opacas, encabezados de filas/columnas en rosa y tipografía redondeada.

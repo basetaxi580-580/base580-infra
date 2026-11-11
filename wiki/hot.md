@@ -9,6 +9,13 @@ tags: [meta, context]
 
 # Recent Context
 
+## PRs pendientes de revisión — 2026-11-11
+
+- [Frontend #11](https://github.com/basetaxi580-580/base580-frontend/pull/11): UI Excel, limpieza de versión anterior, redimensionamiento y combinación de celdas.
+- [Backend #5](https://github.com/basetaxi580-580/base580-backend/pull/5): persistencia de pestañas y orden del workbook.
+- [Infra #5](https://github.com/basetaxi580-580/base580-infra/pull/5): actualización de wiki y flujo de PR.
+- Cuenta activa: `basetaxi580-580`. Pendiente revisar y hacer merge; no desplegar todavía.
+
 ## Estado actual de `/boletos` — 2026-11-11
 
 - El editor Excel vigente es la única entrada del flujo; se retiraron `/boletos/anterior`, `/lista-precios` y la barra de búsqueda global.
