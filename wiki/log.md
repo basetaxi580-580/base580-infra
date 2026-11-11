@@ -9,6 +9,42 @@ tags: [meta, log]
 
 # Wiki Log
 
+## 2026-11-11 — PRs preparados para revisión
+
+- Frontend: [PR #11](https://github.com/basetaxi580-580/base580-frontend/pull/11).
+- Backend: [PR #5](https://github.com/basetaxi580-580/base580-backend/pull/5).
+- Infraestructura/Obsidian: [PR #5](https://github.com/basetaxi580-580/base580-infra/pull/5).
+- Cuenta GitHub activa: `basetaxi580-580`. No se hizo merge ni despliegue.
+
+## 2026-11-11 — UI final y combinación de celdas en boletos
+
+- La pantalla `/boletos` conserva la maqueta Excel con superficies sólidas, pestañas opacas, encabezados de filas/columnas en rosa y tipografía redondeada.
+- Se añadió redimensionamiento tipo Excel para columnas por letras y filas por números; las medidas se persisten dentro de `ticket_workbook.estructura`.
+- El menú contextual ahora incluye `Opciones de formato` con `Combinar celdas` y `Quitar combinación`. La combinación requiere un rango seleccionado con Shift, rechaza solapamientos y solo permite quitar una combinación existente.
+- Se eliminó la barra de búsqueda global del marco y se retiraron las rutas/módulos obsoletos de la versión anterior y `/lista-precios`; `/boletos` queda como entrada vigente del libro.
+- Verificación frontend: 36 pruebas y build de producción correctos. Commits locales: `7ae0f08`, `4a1d6d1`, `3a21b4c`, `98c9f7c`.
+- Sin push ni despliegue todavía; queda listo para preparar PR del repositorio frontend.
+
+## 2026-11-11 — Pestañas BASE dinámicas y persistentes
+
+- Implementadas pestañas personalizadas en `/boletos` con identificador estable, nombres únicos y validación compartida en `ticket_workbook`.
+- Añadidos menú contextual de alta/renombre/eliminación, hojas editables vacías, migración de capturas/formatos/fórmulas al renombrar y bloqueo de eliminación con referencias.
+- Verificación: backend Java 24 `mvnw test` (40 pruebas), frontend `npm test -- --watch=false` (29 pruebas) y `npm run build -- --configuration production` correctos.
+- No se hizo despliegue; el primer intento backend con Java 21 falló por `release 24`, y la verificación correcta usa JDK 24 instalado.
+
+## 2026-11-11 — Ambientes local y producción
+
+- Se generaron dos ambientes explícitos: local y producción.
+- Local: MongoDB en Docker con volumen separado; backend y frontend nativos.
+- Producción: Compose completo con Caddy; puertos Caddy parametrizados.
+- Se añadieron `docker-compose.local.yml`, `env.local.example` y `env.production.example`.
+- Se añadió `levantar-local.bat` para iniciar el ambiente local desde Windows.
+- Convención operativa: ante la solicitud “levantar local”, usar `C:\Users\carlo\Documents\base580\levantar-local.bat`.
+- JDK 24.0.2 está instalado en `C:\Program Files\Java\jdk-24`; el `.bat` lo prioriza automáticamente sobre Java 21.
+- Verificación local correcta: frontend 4200, backend 8080 y MongoDB 27017 activos; Spring Boot inició con Java 24 y conectó a MongoDB.
+- Se creó [[PRD Base580]] con el contexto inicial del producto, requisitos funcionales, estado, pendientes, preguntas abiertas y plantilla para futuros cambios del cliente.
+- Cambio 1 del cliente: se solicita poder crear dos nuevas pestañas de catálogo `BASE ...` en `/boletos`; se corrigió la interpretación inicial que las confundía con hojas libres. La gestión será mediante clic derecho: Añadir libro, Eliminar y Cambiar nombre.
+
 ## 2026-10-27 — IP pública estable para dominio Base580
 
 - En el proyecto GCP `plataforma580` se reservó `base580-web-ip` en `us-central1` con la IP `34.41.156.148`, ya asociada a `base580-vm`.
@@ -226,3 +262,28 @@ Append-only. Newest entries at the TOP.
 - Seeded architecture, modules, flows, decisions, tech stack from README + sprint-plan.
 - Copied `docs/sprint-plan.md` → `.raw/sprint-plan.md`.
 - Added Cursor rules + AGENTS.md so frontend/backend/infra AIs consult and update this vault.
+
+## 2026-11-11 — Ajustes de pestañas de boletos
+
+- Se confirmó con el cliente que la importación solo replica el Excel y que todas las hojas deben seguir siendo editables.
+- Se implementó el menú superior con Añadir libro, Cambiar nombre y Eliminar para todas las pestañas.
+- Se agregó persistencia de renombres/eliminaciones de hojas originales y actualización de referencias de fórmulas.
+
+## 2026-11-11 — Ampliación de hojas nuevas
+
+- Se amplió la plantilla de hojas nuevas a A–Z y 1–200.
+- Se corrigió la reconstrucción de operaciones para que las columnas nuevas sí se inserten en hojas personalizadas.
+- Se incorporaron operaciones persistentes de filas y su menú contextual en los encabezados numéricos.
+
+## 2026-11-11 — Rejilla visual uniforme
+
+- La vista base de todas las hojas se normalizó a columnas A–AL y filas 1–200.
+
+## 2026-11-11 — Pestañas siempre visibles
+
+- La barra de pestañas se fijó con comportamiento sticky en la parte inferior del área visible del libro.
+
+## 2026-11-11 — Ordenamiento de pestañas
+
+- Se agregó arrastre de pestañas con el mouse para cambiar la posición de los libros.
+- El orden completo se persiste en el estado versionado del libro y se recupera al recargar.

@@ -5,13 +5,13 @@ status: active
 language: typescript
 purpose: "UI Angular y reverse proxy Nginx hacia el backend"
 maintainer: ""
-last_updated: 2026-10-21
+last_updated: 2026-11-11
 linked_issues: []
 depends_on: ["Node 24", "base580-backend"]
 used_by: []
 tags: [module, frontend]
 created: 2026-10-15
-updated: 2026-10-21
+updated: 2026-11-11
 ---
 
 # base580-frontend
@@ -36,8 +36,8 @@ Persisten con `PUT /api/state`: captura, catálogos y validación.
 
 Captura (`/captura`) edita solo datos operativos del socio: sitio, placas, engomado, vencimiento, estatus y observaciones. No muestra empleado, tipo de socio, resumen ni historial. El número de empleado sigue en la ficha.
 
-El marco compartido ya no incluye las tarjetas Accesos rápidos ni Estado del sistema. La navegación queda en el menú lateral. Tampoco muestra títulos de sprint. El buscador global está centrado en todas las rutas.
+El marco compartido ya no incluye las tarjetas Accesos rápidos ni Estado del sistema. La navegación queda en el menú lateral. Tampoco muestra títulos de sprint. La barra de búsqueda global fue retirada.
 
 Pantalla local, sin ese guardado: operaciones (precios fijos 173/145), cancelación, reimpresión. Reportes filtran cuatro filas de ejemplo y exportan con `window.print`.
 
-`/boletos` y `/lista-precios` son el corte de boletos y no pasan por `app_state`. Fuente: `PAGO BOLETOS 2026.xlsx` — **19 pestañas** (BASE* catálogo + captura + TOTAL). Ver [[Pago de Boletos 2026]]. Temblor 1 s, reorden, × rojo, libres, autosave 1.5 s. Rutas marcador: inicio, búsqueda, credenciales y engomados.
+`/boletos` es el editor del libro y no pasa por `app_state`. Fuente: `PAGO BOLETOS 2026.xlsx` — **19 pestañas** (BASE* catálogo + captura + TOTAL). Ver [[Pago de Boletos 2026]]. Incluye pestañas personalizadas, reorden, filas/columnas redimensionables, selección con Shift, combinación de celdas y persistencia de estructura en `ticket_workbook`. `/lista-precios` y `/boletos/anterior` fueron retiradas.

@@ -4,7 +4,7 @@ status: active
 purpose: "Publicación, despliegue independiente y recuperación de Base580"
 tags: [flow, deploy]
 created: 2026-10-15
-updated: 2026-10-21
+updated: 2026-11-11
 ---
 
 # Deploy Flow
@@ -49,6 +49,17 @@ basetaxi580@gmail.com. Los remotos son repositorios independientes:
 Verificar cuenta, permisos y rama antes de publicar. user.email sólo configura la
 autoría y no autentica GitHub. Crear una rama y PR por repositorio. Push a main
 activa el workflow de ese servicio; no mezclar sus historiales.
+
+## Preparar un Pull Request
+
+Obsidian no crea ni sube PRs automáticamente; funciona como contexto compartido y checklist. Para los cambios actuales de `/boletos`, el repositorio principal es `base580-frontend`.
+
+1. Revisar [[hot]], esta página y [[base580-frontend]].
+2. En el repositorio correspondiente, confirmar pruebas, build, rama y diff.
+3. Crear una rama de trabajo, subirla al remoto y abrir un PR independiente en GitHub.
+4. Esperar el workflow `deploy.yml`; el deploy se realiza después de integrar en `main`, no al editar la wiki.
+
+La documentación de Obsidian ayuda a preparar el PR y conservar el contexto, pero no reemplaza GitHub, Git ni GitHub Actions. No ejecutar push o merge sin confirmación explícita.
 
 ## VM
 

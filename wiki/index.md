@@ -3,7 +3,7 @@ type: meta
 title: "Wiki Index"
 status: active
 created: 2026-10-15
-updated: 2026-10-21
+updated: 2026-11-11
 tags: [meta, index]
 ---
 
@@ -18,6 +18,7 @@ Master catalog. Update on every ingest or significant write.
 | [[overview]] | meta | active | Resumen ejecutivo del monorepo |
 | [[hot]] | meta | active | Caché de contexto reciente |
 | [[log]] | meta | active | Bitácora de operaciones |
+| [[PRD Base580]] | prd | draft | Requisitos vivos, histórico, pendientes y cambios del cliente |
 
 ## Modules
 
