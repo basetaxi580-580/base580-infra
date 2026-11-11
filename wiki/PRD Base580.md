@@ -332,3 +332,9 @@ Ver [[Key Decisions]], [[Pago de Boletos 2026]] y [[Sprints Pago de Boletos 2026
 - **Solicitud:** mostrar el menú de pestañas en la parte superior, incluir las acciones de añadir, cambiar nombre y eliminar en todas las hojas, y no agregar `BASE` automáticamente a hojas nuevas.
 - **Decisión:** aceptado. La importación del Excel es una réplica inicial; todas las hojas quedan editables y sus cambios estructurales se guardan.
 - **Criterio de aceptación:** los cambios sobreviven al guardado/recarga y las fórmulas se actualizan cuando una hoja cambia de nombre.
+
+## Cambio 2026-11-11 — Tamaño y gestión de filas en hojas nuevas
+
+- **Solicitud:** ampliar libros nuevos a A–Z y 1–200, corregir la inserción de columnas y agregar opciones para insertar o eliminar filas desde los números.
+- **Decisión:** aceptado. Las operaciones de filas y columnas forman parte de la estructura persistida del libro.
+- **Criterio de aceptación:** una hoja nueva muestra Z y 200, puede ampliar columnas y permite agregar/eliminar filas mediante clic derecho.

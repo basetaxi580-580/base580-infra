@@ -112,6 +112,12 @@ Pago de boletos: las hojas de captura ya están en pestañas y los importes se e
 - La réplica importada del Excel es editable: renombrar y eliminar hojas originales se persiste como estructura del libro; las fórmulas se actualizan al renombrar.
 - Las nuevas hojas conservan el nombre escrito sin anteponer `BASE`.
 
+## 2026-11-11 — Tamaño y filas de hojas nuevas
+
+- Las hojas nuevas comienzan con columnas A–Z y filas 1–200.
+- El menú contextual de columnas permite insertar/eliminar columnas también en hojas nuevas.
+- El menú contextual de números de fila permite agregar filas arriba/abajo y eliminar filas, conservando la estructura al guardar.
+
 Despliegue terminado; quedan funcionalidades del prototipo: concurrencia al guardar
 estado completo, historial truncado y operaciones/reportes con datos de ejemplo.
 Todos los agentes consultan y actualizan este vault compartido según CLAUDE.md.

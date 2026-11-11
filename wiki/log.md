@@ -252,3 +252,9 @@ Append-only. Newest entries at the TOP.
 - Se confirmó con el cliente que la importación solo replica el Excel y que todas las hojas deben seguir siendo editables.
 - Se implementó el menú superior con Añadir libro, Cambiar nombre y Eliminar para todas las pestañas.
 - Se agregó persistencia de renombres/eliminaciones de hojas originales y actualización de referencias de fórmulas.
+
+## 2026-11-11 — Ampliación de hojas nuevas
+
+- Se amplió la plantilla de hojas nuevas a A–Z y 1–200.
+- Se corrigió la reconstrucción de operaciones para que las columnas nuevas sí se inserten en hojas personalizadas.
+- Se incorporaron operaciones persistentes de filas y su menú contextual en los encabezados numéricos.
