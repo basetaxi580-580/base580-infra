@@ -15,6 +15,8 @@ tags: [meta, context]
 
 También se añadió `levantar-local.bat` en la raíz del workspace para validar requisitos, levantar MongoDB y abrir backend/frontend en ventanas separadas.
 
+2026-11-11: `/boletos` incorpora pestañas BASE personalizadas persistentes en `ticket_workbook`; las pruebas de frontend, backend Java 24 y el build de producción pasan. Las pestañas nuevas empiezan vacías, se renombrarán con migración segura y no modifican las 19 hojas importadas.
+
 ## Comando habitual: levantar local
 
 Cuando se solicite **levantar local**, ejecutar el archivo `C:\Users\carlo\Documents\base580\levantar-local.bat` desde la raíz del workspace. El script valida Docker/Java/Node, levanta MongoDB con `.env.local` y abre backend y frontend en terminales separadas. No ejecutar `docker compose down -v`.

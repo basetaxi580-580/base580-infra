@@ -293,6 +293,7 @@ Ver [[Key Decisions]], [[Pago de Boletos 2026]] y [[Sprints Pago de Boletos 2026
 | 2026-11-11 | Se documentan los ambientes local y producción y el comando `levantar-local.bat`. | Vigente |
 | 2026-11-11 | Cambio 1: se solicita crear dos nuevas pestañas de catálogo BASE en `/boletos`, gestionadas con clic derecho mediante Añadir libro, Eliminar y Cambiar nombre; se aclara que no son hojas libres. | Pendiente de definición e implementación |
 | 2026-10-21 | Se registra `/boletos` en productivo y el cierre de la primera entrega del corte. | Vigente; producción por reconfirmar |
+| 2026-11-11 | Se implementan pestañas BASE personalizadas persistentes, con identificador estable, alta/renombre/eliminación protegidos, bloqueo optimista y soporte de concurrencia. | Vigente; inicia vacía y no altera TOTAL ni las hojas importadas |
 
 ### Plantilla para futuros cambios
 

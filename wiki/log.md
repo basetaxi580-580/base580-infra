@@ -9,6 +9,13 @@ tags: [meta, log]
 
 # Wiki Log
 
+## 2026-11-11 — Pestañas BASE dinámicas y persistentes
+
+- Implementadas pestañas personalizadas en `/boletos` con identificador estable, nombres únicos y validación compartida en `ticket_workbook`.
+- Añadidos menú contextual de alta/renombre/eliminación, hojas editables vacías, migración de capturas/formatos/fórmulas al renombrar y bloqueo de eliminación con referencias.
+- Verificación: backend Java 24 `mvnw test` (40 pruebas), frontend `npm test -- --watch=false` (29 pruebas) y `npm run build -- --configuration production` correctos.
+- No se hizo despliegue; el primer intento backend con Java 21 falló por `release 24`, y la verificación correcta usa JDK 24 instalado.
+
 ## 2026-11-11 — Ambientes local y producción
 
 - Se generaron dos ambientes explícitos: local y producción.
