@@ -344,3 +344,9 @@ Ver [[Key Decisions]], [[Pago de Boletos 2026]] y [[Sprints Pago de Boletos 2026
 - **Solicitud:** ampliar el rango de columnas hasta `AL` y mantener la misma cantidad base de filas y columnas en todos los libros.
 - **Decisión:** aceptado. Todas las pestañas muestran como mínimo A–AL y 1–200, sin alterar los datos importados.
 - **Criterio de aceptación:** ninguna pestaña se ve más corta que otra por tener menos filas o columnas visibles.
+
+## Cambio 2026-11-11 — Barra de pestañas fija
+
+- **Solicitud:** mantener las pestañas visibles mientras el usuario recorre la hoja.
+- **Decisión:** aceptado. La barra de pestañas permanece fija en la parte inferior del área visible y conserva su scroll horizontal.
+- **Criterio de aceptación:** al desplazarse verticalmente, el usuario sigue pudiendo cambiar de hoja sin bajar hasta el final del libro.

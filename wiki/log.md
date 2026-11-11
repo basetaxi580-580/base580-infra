@@ -262,3 +262,7 @@ Append-only. Newest entries at the TOP.
 ## 2026-11-11 — Rejilla visual uniforme
 
 - La vista base de todas las hojas se normalizó a columnas A–AL y filas 1–200.
+
+## 2026-11-11 — Pestañas siempre visibles
+
+- La barra de pestañas se fijó con comportamiento sticky en la parte inferior del área visible del libro.
