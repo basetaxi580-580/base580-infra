@@ -3,11 +3,29 @@ type: meta
 title: "Hot Cache"
 status: active
 created: 2026-10-15
-updated: 2026-10-21
+updated: 2026-11-11
 tags: [meta, context]
 ---
 
 # Recent Context
+
+## Ambientes local y producción
+
+2026-11-11: se separaron los ambientes operativos. Local usa `docker-compose.local.yml` para levantar únicamente MongoDB con el volumen `base580-local-mongo-data`; backend y frontend corren nativamente en `localhost:8080` y `localhost:4200`. Producción conserva el Compose completo con frontend, backend, MongoDB y Caddy; sus puertos HTTP/HTTPS ahora son configurables mediante `CADDY_HTTP_PORT` y `CADDY_HTTPS_PORT`. Plantillas: `env.local.example` y `env.production.example`.
+
+También se añadió `levantar-local.bat` en la raíz del workspace para validar requisitos, levantar MongoDB y abrir backend/frontend en ventanas separadas.
+
+## Comando habitual: levantar local
+
+Cuando se solicite **levantar local**, ejecutar el archivo `C:\Users\carlo\Documents\base580\levantar-local.bat` desde la raíz del workspace. El script valida Docker/Java/Node, levanta MongoDB con `.env.local` y abre backend y frontend en terminales separadas. No ejecutar `docker compose down -v`.
+
+El script prioriza automáticamente `C:\Program Files\Java\jdk-24` si existe, aunque la terminal tenga JDK 21 en su `PATH`.
+
+Verificación 2026-11-11: Docker Desktop 29.8.2 disponible, frontend `http://localhost:4200` responde 200, backend `http://localhost:8080/actuator/health` responde `UP`, y MongoDB está disponible en `localhost:27017`.
+
+Se creó [[PRD Base580]] como documento vivo para solicitudes del cliente, histórico, pendientes, cambios y criterios de aceptación.
+
+Cambio 1 del cliente: en `/boletos` se necesitan dos nuevas pestañas de catálogo `BASE ...` como las visibles en la franja inferior. No se refiere a las hojas libres. La gestión debe abrirse con clic derecho y ofrecer **Añadir libro**, **Eliminar** y **Cambiar nombre**. Hoy los catálogos están definidos de forma fija en el frontend.
 
 ## Last Updated
 

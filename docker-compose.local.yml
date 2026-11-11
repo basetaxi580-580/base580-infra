@@ -1,0 +1,13 @@
+# Ambiente local: solo MongoDB en Docker.
+# El frontend y el backend se ejecutan de forma nativa desde sus repositorios.
+services:
+  mongo:
+    container_name: base580-local-mongo
+    ports:
+      - "127.0.0.1:${MONGO_PORT:-27017}:27017"
+    volumes:
+      - mongo_local_data:/data/db
+
+volumes:
+  mongo_local_data:
+    name: base580-local-mongo-data

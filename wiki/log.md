@@ -9,6 +9,19 @@ tags: [meta, log]
 
 # Wiki Log
 
+## 2026-11-11 — Ambientes local y producción
+
+- Se generaron dos ambientes explícitos: local y producción.
+- Local: MongoDB en Docker con volumen separado; backend y frontend nativos.
+- Producción: Compose completo con Caddy; puertos Caddy parametrizados.
+- Se añadieron `docker-compose.local.yml`, `env.local.example` y `env.production.example`.
+- Se añadió `levantar-local.bat` para iniciar el ambiente local desde Windows.
+- Convención operativa: ante la solicitud “levantar local”, usar `C:\Users\carlo\Documents\base580\levantar-local.bat`.
+- JDK 24.0.2 está instalado en `C:\Program Files\Java\jdk-24`; el `.bat` lo prioriza automáticamente sobre Java 21.
+- Verificación local correcta: frontend 4200, backend 8080 y MongoDB 27017 activos; Spring Boot inició con Java 24 y conectó a MongoDB.
+- Se creó [[PRD Base580]] con el contexto inicial del producto, requisitos funcionales, estado, pendientes, preguntas abiertas y plantilla para futuros cambios del cliente.
+- Cambio 1 del cliente: se solicita poder crear dos nuevas pestañas de catálogo `BASE ...` en `/boletos`; se corrigió la interpretación inicial que las confundía con hojas libres. La gestión será mediante clic derecho: Añadir libro, Eliminar y Cambiar nombre.
+
 ## 2026-10-27 — IP pública estable para dominio Base580
 
 - En el proyecto GCP `plataforma580` se reservó `base580-web-ip` en `us-central1` con la IP `34.41.156.148`, ya asociada a `base580-vm`.

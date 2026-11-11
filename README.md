@@ -17,7 +17,55 @@ Solo el frontend se publica hacia la red. Backend y Mongo exponen puertos de
 desarrollo en 127.0.0.1. La red compartida es base580-net. El volumen mongo_data
 conserva los datos entre despliegues.
 
-## Inicio local con contenedores
+## Ambientes
+
+El proyecto tiene dos ambientes explícitos. El backend local requiere Java 24 y el frontend requiere Node 24.
+
+- **Local:** MongoDB corre en Docker; backend y frontend se ejecutan de forma nativa para facilitar el desarrollo y el hot reload.
+- **Producción:** frontend, backend, MongoDB y Caddy corren en Docker Compose. Caddy publica HTTP/HTTPS y el backend/Mongo quedan restringidos al loopback del host.
+
+Los archivos de ejemplo son `env.local.example` y `env.production.example`. No copies credenciales reales al repositorio.
+
+## Ambiente local
+
+Desde la raiz del workspace tambien puedes ejecutar `..\levantar-local.bat`.
+El script levanta MongoDB y abre el backend y el frontend en ventanas separadas.
+
+En PowerShell, desde `base580-infra`:
+
+```powershell
+Copy-Item env.local.example .env.local
+docker compose --env-file .env.local -f docker-compose.yml -f docker-compose.local.yml config --quiet
+docker compose --env-file .env.local -f docker-compose.yml -f docker-compose.local.yml up -d mongo
+```
+
+Después, en el backend:
+
+```powershell
+cd ..\base580-backend
+$env:MONGODB_URI = "mongodb://localhost:27017/base580"
+.\mvnw.cmd spring-boot:run
+```
+
+En otra terminal, en el frontend:
+
+```powershell
+cd ..\base580-frontend
+npm ci
+npm start
+```
+
+Abre `http://localhost:4200`. El proxy de Angular reenvía `/api/**` a `http://localhost:8080`.
+
+Para detener únicamente Mongo local:
+
+```powershell
+docker compose --env-file .env.local -f docker-compose.yml -f docker-compose.local.yml stop mongo
+```
+
+No uses `down -v` salvo que quieras eliminar explícitamente la base local.
+
+## Ambiente de producción
 
 Requisitos: Docker con el motor iniciado y Compose v2 con soporte para up --wait.
 Los ejemplos suponen tres clones hermanos, pero las imagenes pueden construirse
@@ -26,12 +74,12 @@ desde cualquier ubicacion.
 ```bash
 docker build -t base580-backend:latest ../base580-backend
 docker build -t base580-frontend:latest ../base580-frontend
-cp env.example .env
+cp env.production.example .env
 docker compose config --quiet
 docker compose up -d --wait --wait-timeout 180
 ```
 
-Abre http://localhost:4200. http://localhost:4200/api/state debe responder JSON.
+En la VM, Caddy publica los puertos 80 y 443. `http://localhost/api/state` debe responder JSON desde el host.
 El navegador llama al mismo origen. Backend espera a Mongo saludable y frontend
 espera a backend saludable.
 
