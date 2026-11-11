@@ -246,3 +246,9 @@ Append-only. Newest entries at the TOP.
 - Seeded architecture, modules, flows, decisions, tech stack from README + sprint-plan.
 - Copied `docs/sprint-plan.md` → `.raw/sprint-plan.md`.
 - Added Cursor rules + AGENTS.md so frontend/backend/infra AIs consult and update this vault.
+
+## 2026-11-11 — Ajustes de pestañas de boletos
+
+- Se confirmó con el cliente que la importación solo replica el Excel y que todas las hojas deben seguir siendo editables.
+- Se implementó el menú superior con Añadir libro, Cambiar nombre y Eliminar para todas las pestañas.
+- Se agregó persistencia de renombres/eliminaciones de hojas originales y actualización de referencias de fórmulas.

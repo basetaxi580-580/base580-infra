@@ -106,6 +106,12 @@ Los tres contenedores están saludables y /api/state responde HTTP 200 desde Ngi
 
 Pago de boletos: las hojas de captura ya están en pestañas y los importes se editan en el corte. Siguen fuera la impresión, la consulta histórica de cortes, folio, formas de pago y ligar el corte a un socio. Ver [[Pago de Boletos 2026]].
 
+## 2026-11-11 — Gestión completa de pestañas en boletos
+
+- El menú contextual se fija en la parte superior y muestra añadir, cambiar nombre y eliminar para cualquier pestaña.
+- La réplica importada del Excel es editable: renombrar y eliminar hojas originales se persiste como estructura del libro; las fórmulas se actualizan al renombrar.
+- Las nuevas hojas conservan el nombre escrito sin anteponer `BASE`.
+
 Despliegue terminado; quedan funcionalidades del prototipo: concurrencia al guardar
 estado completo, historial truncado y operaciones/reportes con datos de ejemplo.
 Todos los agentes consultan y actualizan este vault compartido según CLAUDE.md.

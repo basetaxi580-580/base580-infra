@@ -326,3 +326,9 @@ Ver [[Key Decisions]], [[Pago de Boletos 2026]] y [[Sprints Pago de Boletos 2026
 - **[ASSUMPTION-1]** Esta versión reúne el contexto existente y no sustituye una sesión formal de descubrimiento con el cliente.
 - **[ASSUMPTION-2]** Las funcionalidades marcadas como “Hecho” corresponden al último estado documentado y deben reconfirmarse cuando se cambie código o producción.
 - **[ASSUMPTION-3]** Las solicitudes nuevas se registrarán en este documento y se desglosarán en iniciativas, épicas o tickets según su tamaño.
+
+## Cambio 2026-11-11 — Pestañas editables en Boletos
+
+- **Solicitud:** mostrar el menú de pestañas en la parte superior, incluir las acciones de añadir, cambiar nombre y eliminar en todas las hojas, y no agregar `BASE` automáticamente a hojas nuevas.
+- **Decisión:** aceptado. La importación del Excel es una réplica inicial; todas las hojas quedan editables y sus cambios estructurales se guardan.
+- **Criterio de aceptación:** los cambios sobreviven al guardado/recarga y las fórmulas se actualizan cuando una hoja cambia de nombre.
