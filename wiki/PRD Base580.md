@@ -3,7 +3,7 @@ type: prd
 title: "Base580 — Product Requirements Document"
 status: draft
 created: 2026-11-11
-updated: 2026-11-11
+updated: 2026-11-12
 tags: [prd, base580, crm, product, history]
 owner: "Cliente Base580 / Equipo de producto"
 ---
@@ -158,6 +158,9 @@ El operador puede trabajar con las hojas de captura y consolidado implementadas 
 - La interfaz contiene las 19 hojas base del Excel, además de hojas libres.
 - Permite editar cantidad, precio, descuento, sitio y plata cuando corresponda.
 - Incluye autosave, undo/redo, formato de celdas, navegación tipo Excel y pestañas configurables.
+- Permite seleccionar rangos rectangulares arrastrando con el mouse.
+- `Ctrl+C` copia valores, formato efectivo y fórmulas; al pegar, las referencias relativas se ajustan al destino y el motor recalcula.
+- `Supr` borra contenido y formato aplicado de todo el rango seleccionado; las fórmulas protegidas del Excel se conservan.
 - La pestaña `Total` conserva placas, nombre y cálculos de consolidado.
 
 #### FR-12: Crear nuevas bases de tarifas
@@ -242,6 +245,7 @@ El administrador puede gestionar catálogos generales del CRM sin confundirlos c
 - Consolidado con placas, nombre, cuádruple, quíntuple y séptuple.
 - Ambiente local documentado y script `levantar-local.bat`.
 - Verificación local del 2026-11-11: frontend, backend y MongoDB activos.
+- Selección con mouse, copiado/pegado de rangos con formato y fórmulas, y borrado de rangos con `Supr`, verificados localmente el 2026-11-12.
 
 ### 6.2 Pendiente priorizado
 
@@ -295,6 +299,7 @@ Ver [[Key Decisions]], [[Pago de Boletos 2026]] y [[Sprints Pago de Boletos 2026
 | 2026-10-21 | Se registra `/boletos` en productivo y el cierre de la primera entrega del corte. | Vigente; producción por reconfirmar |
 | 2026-11-11 | Se implementan pestañas BASE personalizadas persistentes, con identificador estable, alta/renombre/eliminación protegidos, bloqueo optimista y soporte de concurrencia. | Vigente; inicia vacía y no altera TOTAL ni las hojas importadas |
 | 2026-11-11 | Se implementa Copiar libro completo desde el menú contextual de pestañas: copia profunda con fórmulas ajustadas, formatos, capturas, fusiones, anchos/altos, persistencia y undo/redo. 5 hallazgos menores registrados en la sección del cambio. | Implementado; hallazgos pendientes de cierre |
+| 2026-11-12 | Se completa la interacción tipo Excel en `/boletos`: selección de rangos con mouse, copiado/pegado con formato y fórmulas ajustadas al destino, recálculo y borrado completo con `Supr`. | Implementado y verificado localmente; 39 pruebas frontend y build correctos |
 
 ### Plantilla para futuros cambios
 
