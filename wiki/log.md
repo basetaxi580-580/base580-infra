@@ -3,11 +3,52 @@ type: meta
 title: "Wiki Log"
 status: active
 created: 2026-10-15
-updated: 2026-11-11
+updated: 2026-11-12
 tags: [meta, log]
 ---
 
 # Wiki Log
+
+## 2026-11-12 — Selección y copiado de rangos en boletos
+
+- Se corrigió la selección con mouse en `/boletos`: `mousedown` inicia el rango, `mouseenter` lo extiende y `mouseup` lo cierra.
+- `Ctrl+C` ya serializa el rango rectangular completo como TSV en lugar de copiar únicamente la celda activa.
+- Verificación: 38 pruebas frontend, build de producción y reproducción en navegador local con 6 celdas seleccionadas y 2 filas × 3 columnas copiadas.
+
+## 2026-11-12 — Formato al copiar y pegar rangos en boletos
+
+- El portapapeles interno ahora incluye un paquete MIME con valores y formatos de cada celda.
+- El pegado aplica valores y formato como una sola operación de deshacer; desde Excel u otra aplicación sigue aceptando TSV sin formato enriquecido.
+- Verificación: el paquete transporta color/negrita y el destino los renderiza en la rejilla local.
+
+## 2026-11-12 — Fórmulas al copiar y pegar rangos en boletos
+
+- El paquete interno ahora conserva las fórmulas y la posición de origen del rango.
+- Al pegar se trasladan referencias relativas, se conservan referencias absolutas con `$` y el motor recalcula las celdas nuevas.
+- Verificación: `=A1*2` pegada una columna a la derecha se convierte en `=B1*2` y devuelve 8 con `B1=4`; 39 pruebas frontend y build correctos.
+
+## 2026-11-12 — Borrado de rangos con Supr en boletos
+
+- `Supr` ahora borra contenido y formato aplicado de todas las celdas editables seleccionadas, devolviéndolas al formato base del Excel y agrupando el cambio en un paso de deshacer.
+- `Backspace` conserva el comportamiento de borrar únicamente la celda activa.
+- Verificación: un rango 2×2 seleccionado con mouse quedó vacío en sus cuatro celdas; una celda con color/negrita volvió a su formato base; 39 pruebas frontend y build correctos.
+
+## 2026-11-11 — Captura de socios: campos nuevos y guardado directo
+
+**Pendiente de commit/deploy** (cuenta `basetaxi580`). Cambios en el endpoint `/captura`.
+
+Backend:
+- `AppStateDocument.MemberProfile` ahora incluye 5 campos (`String`): `licenseExpiry`, `insuranceExpiry`, `phone`, `vehicleYear`, `vehicleBrand`. Mapeados también en `AppStateService.upsertMember()` y `cloneMember()`.
+- El endpoint de guardado real es `PUT /api/state` y (de)serializa `AppStateDocument.MemberProfile`, **no** `MemberDocument.java`. Un primer intento agregó los campos a `MemberDocument.java` (clase casi sin uso) y por eso no persistían; corregido.
+- MongoDB es schema-less: documentos existentes sin estos campos devuelven `null`/`''` sin migración.
+
+Frontend (`capture.page.ts`, `member.store.ts`, `backend-api.service.ts`):
+- Formulario "Crear socio": "Fecha de vencimiento" renombrado a **Fecha de alta** (`expiry`). Nuevos campos: **Venc. Licencia** y **Venc. Seguro** (texto formato `aaaammdd`, `pattern=\d{8}`), **Celular** (texto), **Modelo** (selector de año 2026→1980), **Marca** (texto).
+- Eliminado el flujo de borrador en 2 pasos. **"Guardar" persiste directo al backend** (`PUT /api/state` vía `BackendSyncService.saveToBackend()`); "Eliminar" también. Se quitaron los botones "Publicar mi borrador", "Ver versión actual", "Ver mi borrador" y "Restaurar", el `localStorage` del borrador y los métodos asociados.
+- Robustez: `saveToBackend()` libera `pendingChanges` aunque falle (try/finally).
+- UI: navegación con estado activo (Lista/Crear socio se resaltan según la vista); tarjetas de socio expandibles (clic en el texto despliega toda la info con Editar/Eliminar); layout centrado (`:host { display: block }`).
+
+Verificado en local: build sin errores; alta por la UI con un clic persiste los 6 campos en Mongo.
 
 ## 2026-11-11 — Despliegue de la UI de boletos completado
 

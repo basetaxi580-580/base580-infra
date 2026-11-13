@@ -3,11 +3,28 @@ type: meta
 title: "Hot Cache"
 status: active
 created: 2026-10-15
-updated: 2026-11-11
+updated: 2026-11-12
 tags: [meta, context]
 ---
 
 # Recent Context
+
+## Selección y copiado de rangos en `/boletos` — corregido (2026-11-12)
+
+- La rejilla ahora permite arrastrar con el mouse para seleccionar un rango rectangular de celdas.
+- `Ctrl+C` copia la matriz completa seleccionada como TSV y transporta el formato efectivo del Excel, incluido el formato aplicado por el usuario, para pegarlo en otra posición.
+- Si una celda contiene fórmula, también se transporta la fórmula; al pegar, las referencias relativas se ajustan al nuevo rango y el motor recalcula el resultado. Las referencias con `$` quedan fijas.
+- La tecla `Supr` borra contenido y formato aplicado de todo el rango seleccionado en una sola operación; la celda vuelve a su formato base del Excel. `Backspace` sigue actuando solo sobre la celda activa.
+- El pegado externo conserva el comportamiento anterior usando `text/plain`; el formato enriquecido se aplica cuando el origen es el libro local.
+- Verificado en local: un arrastre de 2×3 selecciona 6 celdas; el paquete de portapapeles incluye formato y el pegado lo renderiza; frontend con 38 pruebas y build correctos.
+
+## Captura de socios — pendiente de commit/deploy (2026-11-11)
+
+- `/captura` "Crear socio": renombrado **Fecha de alta** + nuevos campos Venc. Licencia, Venc. Seguro, Celular, Modelo (año), Marca. Front + back + Mongo.
+- Backend: los campos van en `AppStateDocument.MemberProfile` (**no** en `MemberDocument.java`), + `AppStateService.upsertMember/cloneMember`.
+- "Guardar" persiste directo al backend (`PUT /api/state`); se quitó el flujo borrador/publicar y el botón "Restaurar".
+- UI: botón de navegación activo por vista, tarjetas expandibles, layout centrado.
+- Sin commit ni deploy aún (cuenta `basetaxi580`).
 
 ## Último despliegue — 2026-11-11
 
