@@ -9,6 +9,14 @@ tags: [meta, context]
 
 # Recent Context
 
+## `/boletos` teclado: selector, Enter y Ctrl+Z — corregido (2026-11-26)
+
+Archivo: `base580-frontend/src/app/pages/boletos-libro.page.ts`. Desplegado a producción (PRs frontend #17 `aa7a39c` y #18 `a41c5d0`).
+
+- **Selector** sigue a la celda al navegar con teclado (`mover`/`moverEnter` colapsan `rangoSeleccion`; antes el recuadro `td.sel` se quedaba en la celda del último clic).
+- **Enter = una sola fila abajo** en la misma columna (Shift+Enter arriba). Antes saltaba dos celdas (doble handler: `teclaEditor` + `tecla` al burbujear → se añadió `stopPropagation()`); y en columnas `SERV` saltaba de columna (p. ej. K→P) por la lógica de "bloques de captura" (`moverEnSecuenciaEnter`/`bloquesEntrada`), que se eliminó.
+- **Ctrl+Z / Ctrl+Y** (deshacer/rehacer) funcionan aunque el foco no esté en la rejilla: `@HostListener('document:keydown')` → `atajosHistorial`, respetando la edición de texto en inputs.
+
 ## Backend `/boletos` no guardaba — corregido (2026-11-26)
 
 - `GET https://sitio580.com.mx/api/boletos/libro` daba **404**: la imagen del backend en `base580-vm` era anterior a `BoletosLibroController`. Guardar en `/boletos` fallaba (404) y los cambios solo quedaban en `localStorage` del navegador.

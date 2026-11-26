@@ -9,6 +9,17 @@ tags: [meta, log]
 
 # Wiki Log
 
+## 2026-11-26 — `/boletos`: arreglos de teclado (selector, Enter, Ctrl+Z) en producción
+
+Cuatro correcciones de UX en la hoja Corte de boletos, verificadas con Playwright y desplegadas a producción. Archivo: `base580-frontend/src/app/pages/boletos-libro.page.ts`.
+
+- **El selector no seguía a donde se escribía.** Al navegar con teclado se actualizaba `sel` pero no `rangoSeleccion` (que pinta `td.sel`), así que el recuadro se quedaba en la celda del último clic. `mover()` y `moverEnter()` ahora colapsan `rangoSeleccion` a la celda destino. (PR frontend #17, merge `aa7a39c`.)
+- **Enter saltaba dos celdas.** El editor vive dentro del div de la rejilla, así que el mismo `keydown` lo procesaban `teclaEditor()` y, al burbujear, `tecla()` (con `editando` ya en null). Se añadió `event.stopPropagation()` en `teclaEditor()`. (PR #17.)
+- **Ctrl+Z no revertía si el foco no estaba en la rejilla.** El manejo estaba en el `(keydown)` del div; se movió a un `@HostListener('document:keydown')` (`atajosHistorial`), con Deshacer/Rehacer (Ctrl+Z / Ctrl+Y / Ctrl+Shift+Z) globales, respetando la edición de texto en inputs. (PR #17.)
+- **Enter saltaba de columna (K → P).** En columnas `SERV` (A, F, K, P…) Enter avanzaba por "bloques de captura" tipo Excel y al terminar un bloque o en celdas en blanco saltaba a la columna del siguiente bloque. Ahora Enter mueve **una sola fila** (abajo; Shift+Enter arriba) en la misma columna; se eliminó `moverEnSecuenciaEnter`/`bloquesEntrada`. Reportado en la hoja TAPO 25, columna K. (PR frontend #18, merge `a41c5d0`.)
+
+Verificación: `GET https://sitio580.com.mx/` 200, `Last-Modified 2026-11-26 18:13 GMT`. Pruebas Playwright: B5→Enter→B6, A5→Enter→A6, K6→Enter→K7, K7(editado)→Enter→K8; el selector sigue a la celda; Ctrl+Z revierte con foco en `BODY`; Ctrl+Y rehace; Ctrl+Z durante edición no toca el libro.
+
 ## 2026-11-26 — Backend productivo no guardaba `/boletos`: deploy restaurado
 
 - Síntoma: en `/boletos` el botón Guardar se activaba pero nada persistía. `GET https://sitio580.com.mx/api/boletos/libro` devolvía **404** (respuesta de Spring), mientras `/api/members` y `/api/boletos/tarifas` daban `200`. La imagen del backend en la VM era anterior a `BoletosLibroController`.
