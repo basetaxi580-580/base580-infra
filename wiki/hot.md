@@ -3,11 +3,19 @@ type: meta
 title: "Hot Cache"
 status: active
 created: 2026-10-15
-updated: 2026-11-24
+updated: 2026-11-26
 tags: [meta, context]
 ---
 
 # Recent Context
+
+## Backend `/boletos` no guardaba — corregido (2026-11-26)
+
+- `GET https://sitio580.com.mx/api/boletos/libro` daba **404**: la imagen del backend en `base580-vm` era anterior a `BoletosLibroController`. Guardar en `/boletos` fallaba (404) y los cambios solo quedaban en `localStorage` del navegador.
+- Causa: al migrar a la VM el 24-nov, `DEPLOY_SSH_KEY`/`DEPLOY_USER` del repo backend quedaron del 4-nov (VM vieja) → el deploy automático no entraba por SSH. Además la VM solo tenía Docker Compose v1.
+- Fix: secrets backend `DEPLOY_USER=basetaxi580` + `DEPLOY_SSH_KEY`=`github-actions-base580` (llave ya autorizada en la VM); instalado Docker Compose v2 en `/usr/local/lib/docker/cli-plugins/`; re-deploy → VM en `905dea7`. Volumen Mongo conservado.
+- Estado: `GET /api/boletos/libro` → **200**. Confirmar guardado abriendo `/boletos`, escribiendo en una celda y viendo "Guardado".
+- Deploy backend: usuario SSH **`basetaxi580`**; la VM **requiere Docker Compose v2** (instalado). El secret `DEPLOY_KNOWN_HOSTS` del backend está obsoleto pero su workflow no lo usa. Ver [[Deploy Flow]].
 
 ## Producción y destino de despliegue — corregido (2026-11-24)
 
@@ -42,7 +50,7 @@ tags: [meta, context]
 - [Frontend #11](https://github.com/basetaxi580-580/base580-frontend/pull/11) integrado en `main` con commit `49e5104`.
 - [Backend #5](https://github.com/basetaxi580-580/base580-backend/pull/5) integrado en `main` con commit `905dea7`.
 - [Infra #5](https://github.com/basetaxi580-580/base580-infra/pull/5) integrado en `main` con commit `dce31e4`.
-- Backend desplegado correctamente en la VM: [Actions 43112622446](https://github.com/basetaxi580-580/base580-backend/actions/runs/43112622446).
+- Backend: el workflow [Actions 43112622446](https://github.com/basetaxi580-580/base580-backend/actions/runs/43112622446) marcó "success", pero **no actualizó la VM productiva actual** (ver corrección 2026-11-26 arriba): el endpoint `/api/boletos/libro` estuvo en 404 hasta el 26-nov.
 - Frontend desplegado correctamente después de liberar una cola de Actions: [Actions 43112205518](https://github.com/basetaxi580-580/base580-frontend/actions/runs/43112205518).
 - Producción verificada en `https://sitio580.com.mx/boletos`; `Last-Modified: 2026-11-11 22:39:30 GMT`.
 - La captura inicial mostraba la versión anterior porque producción aún servía `2026-11-06`; la causa fue un run de PR obsoleto reteniendo la concurrencia del frontend. Se canceló ese run y se reencoló el deploy de `main`.
@@ -54,7 +62,7 @@ tags: [meta, context]
 - UI: fondos sólidos, pestañas opacas, encabezados A–AL y 1–200 en rosa, tipografía redondeada y menús contextuales con estilo consistente.
 - Interacciones: clic derecho → `Opciones de formato` → `Combinar celdas` / `Quitar combinación`; seleccionar rangos con clic + Shift. También se pueden redimensionar columnas y filas arrastrando sus encabezados.
 - Persistencia: cambios, formatos, estructura, medidas, combinaciones, pestañas y orden se guardan en `ticket_workbook` mediante `PUT /api/boletos/libro`.
-- Verificación: frontend 36 pruebas y build de producción correctos. El cambio está integrado y desplegado en producción.
+- Verificación: frontend 36 pruebas y build de producción correctos. El frontend quedó integrado y desplegado; la **persistencia en producción** (`PUT /api/boletos/libro`) **no funcionó hasta el 2026-11-26** por el backend desactualizado en la VM (ver corrección arriba).
 - Para publicar, revisar [[Deploy Flow]]: cada repositorio tiene su propio workflow de GitHub Actions, por lo que el PR de esta tanda corresponde principalmente a `base580-frontend`.
 
 ## Ambientes local y producción
@@ -83,7 +91,7 @@ Cambio 1 del cliente: en `/boletos` se necesitan dos nuevas pestañas de catálo
 
 ## Producción — desplegado
 
-Cuenta: **basetaxi580-580**. Sitio: http://34.41.156.148/ (ruta `/boletos`). La IP externa `34.41.156.148` está reservada en GCP como `base580-web-ip` (`us-central1`) para el dominio futuro.
+Cuenta: **basetaxi580-580**. Sitio: **https://sitio580.com.mx** (ya activo, TLS en Caddy), IP `34.41.156.148` reservada en GCP como `base580-web-ip` (`us-central1`). Proyecto GCP: `project-aec4ec0c-c3a8-468a-b10` (plataforma580); VM `base580-vm`, zona `us-central1-a`.
 
 | Repo | PR | Deploy Actions |
 |------|-----|----------------|
@@ -136,8 +144,8 @@ Los tres contenedores están saludables y /api/state responde HTTP 200 desde Ngi
 
 ## Despliegue y respaldo
 
-- VM: clones limpios /root/base580-infra, /root/base580-backend y /root/base580-frontend.
-- Cada workflow construye su imagen y usa scripts/deploy.sh con bloqueo flock.
+- VM `base580-vm`: los clones de deploy están en el `$HOME` del usuario **`basetaxi580`** (dato corregido 2026-11-26; la nota previa de `/root/...` era de la VM anterior y ya no aplica). Usuario SSH de deploy: `basetaxi580` (sudo sin contraseña).
+- Cada workflow construye su imagen y usa scripts/deploy.sh con bloqueo flock. La VM **requiere Docker Compose v2** (instalado en `/usr/local/lib/docker/cli-plugins/`).
 - Respaldo y evidencia de Actions en [[Deploy Flow]]. No borrar volúmenes.
 
 ## Cambios y validación
