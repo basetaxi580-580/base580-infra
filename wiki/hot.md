@@ -3,11 +3,22 @@ type: meta
 title: "Hot Cache"
 status: active
 created: 2026-10-15
-updated: 2026-11-12
+updated: 2026-11-24
 tags: [meta, context]
 ---
 
 # Recent Context
+
+## Producción y destino de despliegue — corregido (2026-11-24)
+
+- Producción oficial: VM GCP `base580-vm`, IP estática `34.41.156.148` (`base580-web-ip`, `us-central1`).
+- DNS autoritativo de `sitio580.com.mx`: el registro `A` de `@` debe apuntar a `34.41.156.148`; `www` permanece como `CNAME` a `sitio580.com.mx`.
+- `DEPLOY_HOST` quedó fijado a `34.41.156.148` en frontend, backend e infraestructura. La huella SSH de GCP quedó actualizada en frontend.
+- No cambiar DNS, `DEPLOY_HOST` ni la VM durante un PR de frontend. Verificar la URL pública y este vault antes de desplegar.
+- Incidente: `179.236.81.226` era un destino anterior sin SSH/HTTP disponible; no es el destino de producción documentado.
+- Verificación 2026-11-24: frontend deploy `45476619835` terminó correctamente; Caddy emitió certificados Let's Encrypt para `sitio580.com.mx` y `www.sitio580.com.mx`, y `/boletos` respondió HTTP 200 dentro de la VM.
+- Causa raíz adicional: el archivo local de Windows `C:\Windows\System32\drivers\etc\hosts` contenía `179.236.81.226 sitio580.com.mx www.sitio580.com.mx`, anulando el DNS. Se eliminó la entrada y se limpió la caché DNS.
+- Verificación local obligatoria: revisar `hosts`, ejecutar `ipconfig /flushdns` y confirmar que `nslookup sitio580.com.mx 8.8.8.8` devuelve `34.41.156.148`.
 
 ## Selección y copiado de rangos en `/boletos` — corregido (2026-11-12)
 

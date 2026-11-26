@@ -29,7 +29,7 @@ Repo hermano: `../base580-backend`.
 
 Spring Boot 4.1, Java 24, `spring-boot-starter-data-mongodb`. URI `MONGODB_URI`, default `mongodb://localhost:27017/base580`.
 
-Colección usada: `app_state`, un documento. Repositorio: `AppStateRepository`. `MemberDocument` no se persiste.
+Colección usada: `app_state`, un documento. Repositorio: `AppStateRepository`. `MemberDocument` no se persiste: el socio vive en la clase anidada `AppStateDocument.MemberProfile` (la que (de)serializa `/api/state`). Campos: `id, name, memberType, employee, site, plate, sticker, expiry` (fecha de alta), `status, dayTickets, nightTickets, totalTickets, nightSaving, personalSaving, cardPayment, notes`, más `licenseExpiry, insuranceExpiry, phone, vehicleYear, vehicleBrand` (agregados 2026-11-11). `AppStateService.upsertMember()` y `cloneMember()` copian estos campos; agregarlos solo a `MemberDocument.java` no basta.
 
 `AppStateController` en `/api`:
 

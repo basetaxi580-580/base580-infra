@@ -9,6 +9,14 @@ updated: 2026-11-11
 
 # Deploy Flow
 
+## Destino fijo de producción — 2026-11-24
+
+La producción oficial es la VM GCP `base580-vm` con IP estática `34.41.156.148` (`base580-web-ip`, `us-central1`). El registro DNS `@` de `sitio580.com.mx` debe apuntar a esa IP y `www` debe permanecer como CNAME hacia el dominio raíz. Los tres repositorios usan `DEPLOY_HOST=34.41.156.148`.
+
+No usar `179.236.81.226`: es un destino anterior que no responde por SSH ni HTTP. No modificar DNS ni secretos de Actions desde un PR funcional. Antes de cada publicación, leer esta página y [[hot]], comprobar la cuenta `basetaxi580-580`, y verificar la URL pública después del deploy. El deploy frontend `45476619835` fue verificado en GCP el 2026-11-24.
+
+Si una máquina continúa llegando a `179.236.81.226` aunque el DNS público ya devuelva `34.41.156.148`, revisar `C:\Windows\System32\drivers\etc\hosts`, eliminar entradas antiguas del dominio y ejecutar `ipconfig /flushdns`. No corregir este síntoma cambiando otra vez el DNS o `DEPLOY_HOST`.
+
 ## Último despliegue verificado — 2026-11-11
 
 Los cambios de `/boletos` ya están integrados y publicados bajo la cuenta `basetaxi580-580`:

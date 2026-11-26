@@ -3,11 +3,27 @@ type: meta
 title: "Wiki Log"
 status: active
 created: 2026-10-15
-updated: 2026-11-12
+updated: 2026-11-24
 tags: [meta, log]
 ---
 
 # Wiki Log
+
+## 2026-11-24 — Corrección de destino de producción y DNS
+
+- Se confirmó en Obsidian que la producción oficial es la VM GCP `base580-vm` con IP estática `34.41.156.148`.
+- El panel DNS mostró `@ A 179.236.81.226`; el propietario del dominio lo actualizó a `@ A 34.41.156.148` y conservó `www CNAME sitio580.com.mx`.
+- Los DNS autoritativos y Google DNS ya respondieron con `34.41.156.148`; otros resolvedores pueden conservar la respuesta anterior durante el TTL de 300 segundos.
+- Se fijó `DEPLOY_HOST=34.41.156.148` en los tres repositorios y se actualizó `DEPLOY_KNOWN_HOSTS` del frontend con la huella verificada de GCP.
+- El PR #16 solo modificó frontend; ningún workflow ejecuta cambios DNS. El incidente provino de operar temporalmente con destinos SSH inconsistentes.
+- Regla operativa: no cambiar DNS, secretos de Actions ni destino de producción como parte de un PR funcional sin registrarlo aquí y verificar `https://sitio580.com.mx/` antes y después.
+- Verificación final: Caddy emitió certificados válidos para ambos dominios y respondió `200` para `/boletos` dentro de la VM; el firewall GCP permite TCP 80/443. La prueba desde esta red local continuó expirando, por lo que debe confirmarse desde la red del cliente.
+
+## 2026-11-24 — Causa raíz de la falla local
+
+- El navegador seguía resolviendo `179.236.81.226` porque el archivo Windows `C:\Windows\System32\drivers\etc\hosts` tenía una entrada fija para `sitio580.com.mx` y `www.sitio580.com.mx`.
+- Se eliminó esa entrada y se ejecutó `ipconfig /flushdns`; el dominio volvió a utilizar el DNS público hacia `34.41.156.148`.
+- Regla de diagnóstico: antes de cambiar DNS, deploy o código, revisar también `hosts` local y cualquier proxy/caché de resolución.
 
 ## 2026-11-12 — Selección y copiado de rangos en boletos
 
