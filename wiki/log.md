@@ -3,11 +3,43 @@ type: meta
 title: "Wiki Log"
 status: active
 created: 2026-10-15
-updated: 2026-11-12
+updated: 2026-11-26
 tags: [meta, log]
 ---
 
 # Wiki Log
+
+## 2026-11-26 — Backend productivo no guardaba `/boletos`: deploy restaurado
+
+- Síntoma: en `/boletos` el botón Guardar se activaba pero nada persistía. `GET https://sitio580.com.mx/api/boletos/libro` devolvía **404** (respuesta de Spring), mientras `/api/members` y `/api/boletos/tarifas` daban `200`. La imagen del backend en la VM era anterior a `BoletosLibroController`.
+- Causa raíz (cadena de 3):
+  1. Secrets del repo `base580-backend` desactualizados: `DEPLOY_SSH_KEY` y `DEPLOY_USER` seguían del 2026-11-04 (VM anterior); al migrar el 24-nov solo se actualizó `DEPLOY_HOST`. El workflow backend moría con `ssh: handshake failed: unable to authenticate`.
+  2. El clon del backend en la VM estaba en `a2595f1` (antes del endpoint del libro).
+  3. La VM solo tenía Docker Compose **v1 (1.29.2)**; `scripts/deploy.sh` requiere **v2** para construir la imagen desde el código (`docker compose config --format json` + `--wait`).
+- Hallazgo clave: la llave de deploy `github-actions-base580` (ed25519, = `~/.ssh/base580_deploy` local) YA estaba autorizada en la VM para el usuario **`basetaxi580`** (metadata de instancia). No se tocó la VM para el acceso SSH.
+- Correcciones aplicadas:
+  - Secrets `base580-backend`: `DEPLOY_USER=basetaxi580`, `DEPLOY_SSH_KEY` = llave `github-actions-base580`.
+  - VM `base580-vm`: instalado el plugin oficial **Docker Compose v2** en `/usr/local/lib/docker/cli-plugins/docker-compose` (drop-in, aditivo; no borra v1 ni toca contenedores/datos; reversible con `rm`).
+  - Re-disparado el workflow backend (`workflow_dispatch`); la VM se reseteó a `origin/main` `905dea7` y reconstruyó solo el backend (volumen Mongo conservado).
+- Verificación: run de deploy `success`; `GET /api/boletos/libro` → **200**. No se hizo escritura de prueba contra producción (BD del cliente); el libro productivo estaba vacío (`version: null`) y los datos previos no eran reales (vivían solo en localStorage del navegador).
+- Datos de infra: proyecto GCP `project-aec4ec0c-c3a8-468a-b10` (plataforma580); VM `base580-vm` `us-central1-a` `34.41.156.148`; usuario SSH de deploy `basetaxi580` (sudo sin contraseña); llave `~/.ssh/base580_deploy`.
+- Pendiente: `DEPLOY_KNOWN_HOSTS` del backend sigue viejo, pero su workflow no lo usa. Nota de provisión: la VM requiere Docker Compose v2 (ya instalado); re-provisionar sin él repetiría la falla. Ver [[Deploy Flow]].
+
+## 2026-11-24 — Corrección de destino de producción y DNS
+
+- Se confirmó en Obsidian que la producción oficial es la VM GCP `base580-vm` con IP estática `34.41.156.148`.
+- El panel DNS mostró `@ A 179.236.81.226`; el propietario del dominio lo actualizó a `@ A 34.41.156.148` y conservó `www CNAME sitio580.com.mx`.
+- Los DNS autoritativos y Google DNS ya respondieron con `34.41.156.148`; otros resolvedores pueden conservar la respuesta anterior durante el TTL de 300 segundos.
+- Se fijó `DEPLOY_HOST=34.41.156.148` en los tres repositorios y se actualizó `DEPLOY_KNOWN_HOSTS` del frontend con la huella verificada de GCP.
+- El PR #16 solo modificó frontend; ningún workflow ejecuta cambios DNS. El incidente provino de operar temporalmente con destinos SSH inconsistentes.
+- Regla operativa: no cambiar DNS, secretos de Actions ni destino de producción como parte de un PR funcional sin registrarlo aquí y verificar `https://sitio580.com.mx/` antes y después.
+- Verificación final: Caddy emitió certificados válidos para ambos dominios y respondió `200` para `/boletos` dentro de la VM; el firewall GCP permite TCP 80/443. La prueba desde esta red local continuó expirando, por lo que debe confirmarse desde la red del cliente.
+
+## 2026-11-24 — Causa raíz de la falla local
+
+- El navegador seguía resolviendo `179.236.81.226` porque el archivo Windows `C:\Windows\System32\drivers\etc\hosts` tenía una entrada fija para `sitio580.com.mx` y `www.sitio580.com.mx`.
+- Se eliminó esa entrada y se ejecutó `ipconfig /flushdns`; el dominio volvió a utilizar el DNS público hacia `34.41.156.148`.
+- Regla de diagnóstico: antes de cambiar DNS, deploy o código, revisar también `hosts` local y cualquier proxy/caché de resolución.
 
 ## 2026-11-12 — Selección y copiado de rangos en boletos
 

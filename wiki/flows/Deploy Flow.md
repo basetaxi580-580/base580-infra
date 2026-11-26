@@ -4,10 +4,32 @@ status: active
 purpose: "Publicación, despliegue independiente y recuperación de Base580"
 tags: [flow, deploy]
 created: 2026-10-15
-updated: 2026-11-11
+updated: 2026-11-26
 ---
 
 # Deploy Flow
+
+## Deploy del backend a la VM nueva — requisitos (2026-11-26)
+
+Tras migrar a `base580-vm` (`34.41.156.148`) el 24-nov, el deploy automático del backend estuvo roto hasta el 26-nov. Dejar fijos estos puntos para no repetirlo:
+
+- **Secrets del repo `base580-backend`** deben apuntar a la VM nueva, no solo `DEPLOY_HOST`:
+  - `DEPLOY_USER=basetaxi580` (usuario SSH con `sudo` sin contraseña; su `$HOME` contiene los clones `base580-backend`/`base580-infra`).
+  - `DEPLOY_SSH_KEY` = llave privada `~/.ssh/base580_deploy` (ed25519, etiqueta `github-actions-base580`), cuya pública ya está autorizada en la metadata de la instancia para `basetaxi580`.
+  - `DEPLOY_KNOWN_HOSTS` quedó obsoleto, pero el workflow backend (`appleboy/ssh-action`) no lo usa.
+- **La VM requiere Docker Compose v2.** `scripts/deploy.sh` construye la imagen desde el código solo con v2 (`docker compose config --format json` + `--wait`); si solo hay `docker-compose` v1 aborta con `Building from a source directory requires Docker Compose v2`. El plugin oficial se instaló en `/usr/local/lib/docker/cli-plugins/docker-compose` (disponible para root). Re-provisionar la VM sin v2 repite la falla.
+- **GCP:** proyecto `project-aec4ec0c-c3a8-468a-b10` (plataforma580); instancia `base580-vm`, zona `us-central1-a`. Inspección/administración con `gcloud compute ssh base580-vm --project <id> --zone us-central1-a` bajo la cuenta `basetaxi580@gmail.com`.
+- Re-disparo manual del deploy: `gh workflow run deploy.yml -R basetaxi580-580/base580-backend --ref main` (el workflow admite `workflow_dispatch`). Verificar luego `GET https://sitio580.com.mx/api/boletos/libro` → `200`.
+
+Síntoma que esto resuelve: en `/boletos` el botón Guardar se activaba pero no persistía (`PUT /api/boletos/libro` → 404 porque la imagen del backend era anterior a `BoletosLibroController`).
+
+## Destino fijo de producción — 2026-11-24
+
+La producción oficial es la VM GCP `base580-vm` con IP estática `34.41.156.148` (`base580-web-ip`, `us-central1`). El registro DNS `@` de `sitio580.com.mx` debe apuntar a esa IP y `www` debe permanecer como CNAME hacia el dominio raíz. Los tres repositorios usan `DEPLOY_HOST=34.41.156.148`.
+
+No usar `179.236.81.226`: es un destino anterior que no responde por SSH ni HTTP. No modificar DNS ni secretos de Actions desde un PR funcional. Antes de cada publicación, leer esta página y [[hot]], comprobar la cuenta `basetaxi580-580`, y verificar la URL pública después del deploy. El deploy frontend `45476619835` fue verificado en GCP el 2026-11-24.
+
+Si una máquina continúa llegando a `179.236.81.226` aunque el DNS público ya devuelva `34.41.156.148`, revisar `C:\Windows\System32\drivers\etc\hosts`, eliminar entradas antiguas del dominio y ejecutar `ipconfig /flushdns`. No corregir este síntoma cambiando otra vez el DNS o `DEPLOY_HOST`.
 
 ## Último despliegue verificado — 2026-11-11
 
@@ -19,7 +41,9 @@ Los cambios de `/boletos` ya están integrados y publicados bajo la cuenta `base
 | Backend | [#5](https://github.com/basetaxi580-580/base580-backend/pull/5) | `905dea7` | [43112622446](https://github.com/basetaxi580-580/base580-backend/actions/runs/43112622446) success |
 | Infraestructura | [#5](https://github.com/basetaxi580-580/base580-infra/pull/5) | `dce31e4` | workflow sin cambios funcionales al producto |
 
-Producción se verificó en `https://sitio580.com.mx/boletos`. El frontend se actualizó a las `2026-11-11 22:39:30 GMT` y dejó de servir la versión anterior del 6 de noviembre.
+El frontend se actualizó a las `2026-11-11 22:39:30 GMT` y dejó de servir la versión anterior del 6 de noviembre.
+
+> ⚠️ **Corrección 2026-11-26:** la verificación del 11-11 cubrió solo la **página** `/boletos` (frontend), no el guardado. El deploy backend `43112622446` marcó "success" como workflow, pero su destino era anterior a la migración de la VM (24-nov), así que **nunca llegó a la VM productiva actual `base580-vm`**: `GET /api/boletos/libro` estuvo en **404** hasta el 26-nov. Ver la sección "Deploy del backend a la VM nueva — requisitos (2026-11-26)" arriba y [[log]].
 
 ### Recuperación de una cola de Actions
 
@@ -87,6 +111,8 @@ Obsidian no crea ni sube PRs automáticamente; funciona como contexto compartido
 La documentación de Obsidian ayuda a preparar el PR y conservar el contexto, pero no reemplaza GitHub, Git ni GitHub Actions. No ejecutar push o merge sin confirmación explícita.
 
 ## VM
+
+> ⚠️ **Corrección 2026-11-26 (VM actual `base580-vm`):** los clones de despliegue están en el `$HOME` del usuario **`basetaxi580`** (`~/base580-backend`, `~/base580-infra`, `~/base580-frontend`), **no en `/root`**. Las rutas `/root/...` de abajo describen la VM anterior y ya no aplican. El usuario SSH de deploy es `basetaxi580` (sudo sin contraseña) y la VM requiere Docker Compose v2.
 
 Los clones de despliegue están en /root/base580-infra, /root/base580-backend y
 /root/base580-frontend. Los tres son clones limpios en main. Se instalaron jq y flock

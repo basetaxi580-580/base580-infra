@@ -34,7 +34,7 @@ Angular 22. `MemberStore` en signals es la copia local. `APP_INITIALIZER` hace `
 
 Persisten con `PUT /api/state`: captura, catálogos y validación.
 
-Captura (`/captura`) edita solo datos operativos del socio: sitio, placas, engomado, vencimiento, estatus y observaciones. No muestra empleado, tipo de socio, resumen ni historial. El número de empleado sigue en la ficha.
+Captura (`/captura`) edita datos operativos del socio: sitio, placas, engomado, **fecha de alta** (campo `expiry`, antes "vencimiento"), **venc. licencia**, **venc. seguro** (fechas en texto `aaaammdd`, `pattern=\\d{8}`), **celular**, **modelo** (selector de año 2026→1980) y **marca**, además de estatus y observaciones. "Guardar" persiste directo con `PUT /api/state`; se eliminó el flujo de borrador en 2 pasos (botones "Publicar mi borrador", "Ver versión actual", "Ver mi borrador", "Restaurar" y el `localStorage` del borrador). La lista muestra cada socio como tarjeta expandible: clic en el texto despliega toda la info con Editar/Eliminar; la navegación resalta el botón activo según la vista. No muestra empleado, tipo de socio, resumen ni historial. El número de empleado sigue en la ficha.
 
 El marco compartido ya no incluye las tarjetas Accesos rápidos ni Estado del sistema. La navegación queda en el menú lateral. Tampoco muestra títulos de sprint. La barra de búsqueda global fue retirada.
 
